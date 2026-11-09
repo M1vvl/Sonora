@@ -7,7 +7,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 if (Test-Path -LiteralPath $archive) { Remove-Item -LiteralPath $archive -Force }
 $zip = [IO.Compression.ZipFile]::Open($archive, [IO.Compression.ZipArchiveMode]::Create)
 try {
-  $files = @('package.json','package-lock.json','LICENSE','THIRD_PARTY_NOTICES.md','README.md','AGENTS.md','启动 Sonara.vbs')
+  $files = @('package.json','package-lock.json','LICENSE','THIRD_PARTY_NOTICES.md','README.md','AGENTS.md','.gitattributes','启动 Sonara.vbs')
   foreach ($folder in @('src','ui','config','assets','scripts','tests','docs','.github')) {
     $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot $folder) -Recurse -File | ForEach-Object { $_.FullName.Substring($projectRoot.Length + 1) }
   }
@@ -19,4 +19,5 @@ try {
   }
 } finally { $zip.Dispose() }
 Write-Output "Corresponding application source: $archive"
+
 
