@@ -1,5 +1,15 @@
 # Sonara
 
+[下载 Windows 单文件版](https://github.com/M1vvl/Sonora/releases/latest) · [直接下载 0.3.41 EXE](https://github.com/M1vvl/Sonora/releases/download/v0.3.41/Sonara-0.3.41-Windows.exe)
+
+打开发布页，在 Assets 中下载 Sonara 对应版本的 Windows.exe，保存到自己的文件夹后双击运行。运行依赖由程序自动展开，首次启动会有短暂等待。各用户的账号保存在自己的私人数据目录。
+
+仓库 Code 页面提供开发源码，可直接运行的软件在 Releases。“启动 Sonara.vbs”用于启动已经在源码目录构建好的程序。
+
+## 当前版本 0.3.41
+
+新增私人账号保存目录及迁移设置，并接入 GitHub 正式版本检查、校验下载和自动替换更新。
+
 ## 先前版本 0.3.39
 
 DIY 改为手动保存，调整只实时预览；点击保存成功后短暂显示“已保存”，退出不自动提交。纯主题歌词使用当前主题的不透明底色。详见 [0.3.39 核对](docs/release-v0.3.39.md)。
