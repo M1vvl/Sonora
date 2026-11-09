@@ -1,0 +1,20 @@
+/* Bounded persistent lyric track. Reveal follows MineRadio's native word clock
+   or its smoothstep line clock; no duplicate text layer or extra audio source. */
+.pulse-lyric-projection{position:relative;display:block;overflow:hidden;width:100%;height:100%;padding:0!important;text-align:center;mask-image:linear-gradient(transparent,#000 var(--motion-edge-fade,12%),#000 calc(100% - var(--motion-edge-fade,12%)),transparent)}
+.music-lyrics-lines.pulse-lyric-projection{font-size:12px;min-height:100%;height:100%}
+.music-lyrics-card .music-lyrics-viewport:has(.pulse-lyric-projection){overflow:hidden;mask-image:none}
+.music-immersive-lyrics.pulse-lyric-projection{display:block;height:58vh;max-height:68%;padding:0;gap:0;perspective:1000px}
+.pulse-lyric-track{position:relative;display:block;width:100%;min-height:100%;transform:translate3d(0,0,0)}
+.pulse-lyric-projection .pulse-lyric-row{position:absolute;left:0;right:0;width:100%;margin:0!important;padding:0 5px;line-height:var(--motion-line-height,1.4);text-align:center;overflow-wrap:anywhere;color:var(--lyric-user-base,var(--lyric-song-color,var(--visual-text,var(--text))));font-size:inherit;font-weight:inherit;transition:opacity 180ms linear,transform 220ms ease-out}
+.pulse-lyric-projection .pulse-lyric-row-body{display:block;transform-origin:center;transition:transform 280ms cubic-bezier(.2,.7,.2,1)}
+.pulse-lyric-row .pulse-lyric-original{display:inline-block;max-width:100%;white-space:pre-wrap;letter-spacing:var(--motion-letter-spacing,0em)}
+.pulse-lyric-row small{display:block;font-size:var(--lyric-translation-size,.65em);margin-top:var(--lyric-translation-gap,.75em);line-height:1.4;opacity:var(--lyric-translation-opacity,.8);font-weight:500;color:var(--visual-text,var(--text))}
+.pulse-lyric-row small[hidden],.pulse-lyric-row[hidden]{display:none!important}
+.pulse-lyric-projection .pulse-lyric-row.is-outside-window{opacity:0!important;pointer-events:none}
+.pulse-lyric-row.is-current{--lyric-hi:var(--lyric-user-highlight,color-mix(in srgb,var(--visual-accent,var(--lyric-song-color,var(--accent-text))) 74%,#fff));--lyric-low:var(--lyric-user-base,color-mix(in srgb,var(--lyric-hi) 35%,var(--visual-text,var(--text))));}
+.pulse-lyric-row.is-current[data-fill=on][data-timing=line] .pulse-lyric-original,.pulse-lyric-row.is-current[data-fill=on] .pulse-lyric-word{background-image:linear-gradient(90deg,var(--lyric-hi) max(0%,calc(var(--word-reveal,var(--lyric-reveal,0%)) - var(--lyric-feather,5.5%))),var(--lyric-low) min(100%,calc(var(--word-reveal,var(--lyric-reveal,0%)) + var(--lyric-feather,5.5%))));background-clip:text;-webkit-background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent;text-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.pulse-lyric-row.is-current[data-fill=off] .pulse-lyric-original{color:var(--lyric-hi)}
+.pulse-lyric-immersive .pulse-lyric-row.is-current .pulse-lyric-row-body{filter:drop-shadow(0 1px calc(2px + var(--lyric-sweep,0)*2px) color-mix(in srgb,var(--lyric-hi) 45%,transparent));text-shadow:0 1px 12px color-mix(in srgb,var(--lyric-hi) 18%,transparent)}
+.pulse-lyric-projection .pulse-lyric-row.is-current{transition:opacity 180ms linear,transform 220ms ease-out}
+.pulse-lyric-projection[data-lyric-motion=false] .pulse-lyric-row,.pulse-lyric-projection[data-lyric-motion=false] .pulse-lyric-row-body{transition:none}
+@media(prefers-reduced-motion:reduce){.pulse-lyric-row,.pulse-lyric-row-body{transition:none!important}}

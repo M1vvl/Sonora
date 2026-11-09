@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src https: http: blob:; connect-src https: http:; img-src 'self' data: https: http:; worker-src 'self' blob:">
+<title>Sonara · 番剧播放</title><link rel="stylesheet" href="../themes.css"><link rel="stylesheet" href="player.css">
+<script src="../themes.js" defer></script><script src="../../node_modules/hls.js/dist/hls.min.js" defer></script><script src="player-settings.js" defer></script><script src="chrome-visibility.js" defer></script><script src="player.js" defer></script></head>
+<body>
+  <header class="player-header">
+    <button class="icon-button back-button" id="close" aria-label="返回番剧详情" title="返回番剧详情"><svg viewBox="0 0 24 24"><path d="m14 5-7 7 7 7M7 12h14"/></svg></button>
+    <div class="player-heading"><h1 id="play-title">正在准备播放</h1><span id="source-name">番剧播放</span></div>
+    <button class="icon-button" id="picture-toggle" aria-label="画面设置" title="画面设置" aria-expanded="false" aria-controls="player-panel"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2.5"/><circle cx="15" cy="17" r="2.5"/></svg></button>
+  </header>
+  <main class="player-workspace">
+    <div id="video-stage" class="video-stage">
+      <video id="video" playsinline preload="metadata"></video>
+      <div id="notice" role="status"><span class="loader" aria-hidden="true"></span><p id="notice-text">正在从所选规则的页面识别视频…</p></div>
+      <button id="resume-play" hidden>点击播放</button>
+    </div>
+    <aside id="player-panel" class="player-panel" hidden aria-label="播放设置">
+      <div class="panel-heading"><h2 id="panel-title">画面设置</h2><button class="icon-button" id="panel-close" aria-label="收起设置"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button></div>
+      <div id="picture-panel" class="panel-scroll">
+        <section class="picture-section"><h3>超分输出目标</h3><div class="output-options" id="output-options" role="group" aria-label="GPU 超分输出目标"><button data-output="auto">自动</button><button data-output="1080p">1080p</button><button data-output="1440p">2K · 1440p</button><button data-output="2160p">4K · 2160p</button></div><p class="setting-help" id="source-quality">片源分辨率等待解码</p><p class="setting-help" id="output-help">GPU 中间画面按所选目标处理；保持原比例，最终显示受窗口和屏幕像素限制。</p><h3 class="quality-subheading">增强算法</h3><div class="mode-options" id="sr-options" role="group" aria-label="超分增强算法"><button data-sr="off">关闭增强</button><button data-sr="efficiency">效率</button><button data-sr="quality">最佳质量</button></div><p class="setting-help" id="sr-help">新配置默认最佳质量与 4K 输出目标。超分不等同于原生 4K 片源。</p></section>
+        <section class="picture-section"><h3>画面比例</h3><div class="aspect-options" id="aspect-options" role="group" aria-label="画面比例"><button data-aspect="contain">适应画面</button><button data-aspect="cover">填满画面</button><button data-aspect="fill">拉伸填充</button><button data-aspect="16:9">16:9</button><button data-aspect="4:3">4:3</button></div></section>
+        <section class="picture-section"><div class="section-heading"><h3>画面调节</h3><button class="quiet-button" id="reset-picture">还原</button></div>
+          <label class="picture-slider"><span>亮度<output id="brightness-output">0</output></span><input type="range" min="-100" max="100" value="0" step="1" data-picture="brightness" aria-label="亮度"></label>
+          <label class="picture-slider"><span>对比度<output id="contrast-output">0</output></span><input type="range" min="-100" max="100" value="0" step="1" data-picture="contrast" aria-label="对比度"></label>
+          <label class="picture-slider"><span>饱和度<output id="saturation-output">0</output></span><input type="range" min="-100" max="100" value="0" step="1" data-picture="saturation" aria-label="饱和度"></label>
+          <label class="picture-slider"><span>伽马<output id="gamma-output">0</output></span><input type="range" min="-100" max="100" value="0" step="1" data-picture="gamma" aria-label="伽马"></label>
+        </section>
+        <section class="picture-section"><h3>播放速度</h3><div class="speed-options" id="speed-options" role="group" aria-label="播放速度"></div></section>
+        <div class="source-actions"><button id="retry">重新解析来源</button><button id="source">打开来源网页 ↗</button></div>
+      </div>
+      <div id="episode-panel" class="panel-scroll" hidden><div id="episode-list" class="episode-list"></div></div>
+    </aside>
+  </main>
+  <footer class="player-controls">
+    <div class="seek-row"><label class="sr-only" for="seek">播放进度</label><input id="seek" type="range" min="0" max="1" step="0.1" value="0" disabled><span id="seek-preview" class="seek-preview" hidden></span></div>
+    <div class="controls-row">
+      <div class="transport-controls"><button class="icon-button" id="play-pause" title="播放 / 暂停（空格）" aria-label="播放" disabled><svg viewBox="0 0 24 24"><path id="play-pause-path" d="M7 4 22 12 7 20Z"/></svg></button><button class="icon-button" id="next-episode" aria-label="下一集" title="下一集" disabled><svg viewBox="0 0 24 24"><path d="m5 5 11 7-11 7ZM19 5v14"/></svg></button><span class="playback-time"><span id="current-time">00:00</span><span class="time-separator">/</span><span id="duration-time">00:00</span></span></div>
+      <div class="volume-controls"><button class="icon-button" id="mute" aria-label="静音" title="静音（M）"><svg viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4V4Z"/><path id="volume-wave" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button><label class="sr-only" for="volume">音量</label><input id="volume" type="range" min="0" max="100" step="1" value="100" aria-label="音量"></div>
+      <span class="control-spacer"></span>
+      <button class="text-control" id="sr-toggle" aria-expanded="false" aria-controls="player-panel">画质<span id="sr-current">4K 目标</span></button>
+      <button class="text-control" id="speed-toggle" aria-expanded="false" aria-controls="player-panel">倍速<span id="speed-current">1×</span></button>
+      <button class="icon-button" id="episodes-toggle" aria-label="选集" title="选集" aria-expanded="false" aria-controls="player-panel"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h10m6-8-4 4 4 4"/></svg></button>
+      <button class="icon-button" id="fullscreen" aria-label="全屏" title="全屏（F）"><svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button>
+    </div>
+  </footer>
+  <span id="player-announcement" class="sr-only" role="status" aria-live="polite"></span>
+</body></html>

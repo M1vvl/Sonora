@@ -1,0 +1,49 @@
+/* This avatar keeps the original Agent SVG mounted underneath a loaded cover. */
+.agent-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 28px;
+  flex: none;
+}
+.agent-avatar > .agent-orb { grid-area: 1 / 1; }
+:is(#music-cover,.island-music-art img) {
+  grid-area: 1 / 1;
+  display: block;
+  width: 26px;
+  height: 26px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 249, 255, .6);
+  box-shadow: 0 1px 3px rgba(8, 13, 24, .28), inset 0 0 0 1px rgba(0, 0, 0, .15);
+  pointer-events: none;
+  animation: pulse-record-spin 12s linear infinite;
+  animation-play-state: paused;
+}
+#music-cover[hidden] { display: none; }
+:is(.agent-avatar,.island-music-art)[data-media-active="true"][data-media-playing="true"][data-media-visible="true"] > img {
+  animation-play-state: running;
+}
+:is(.agent-avatar,.island-music-art)[data-media-active="true"]::after {
+  content: "";
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(241, 245, 253, .84);
+  box-shadow: 0 0 0 1px rgba(12, 17, 26, .22);
+  pointer-events: none;
+}
+@keyframes pulse-record-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  :is(.agent-avatar,.island-music-art)[data-media-motion="system"] > img { animation: none !important; }
+}
+/* The user explicitly requested record rotation. This app-level preference
+   never changes the operating-system motion setting. */
+:is(.agent-avatar,.island-music-art)[data-media-motion="rotate"] > img { animation: pulse-record-spin 12s linear infinite !important; animation-play-state: paused !important; }
+:is(.agent-avatar,.island-music-art)[data-media-motion="rotate"][data-media-active="true"][data-media-playing="true"][data-media-visible="true"] > img { animation-play-state: running !important; }
+:is(.agent-avatar,.island-music-art)[data-media-motion="still"] > img { animation: none !important; }

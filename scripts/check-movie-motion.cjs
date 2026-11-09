@@ -1,0 +1,39 @@
+'use strict';
+// Real hidden Chromium layout/input checks; synthetic movie metadata only.
+const fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
+const workspace=path.resolve(__dirname,'..'),arg=name=>{const i=process.argv.indexOf('--'+name);return i>=0?process.argv[i+1]:null;};
+const root=path.resolve(arg('root')||workspace),out=path.resolve(arg('output')||path.join(workspace,'artifacts/hotfix-movie-motion'));
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function runner(){const {spawn}=require('node:child_process'),env={...process.env};delete env.ELECTRON_RUN_AS_NODE;fs.mkdirSync(out,{recursive:true});await new Promise((resolve,reject)=>{const child=spawn(require('electron'),[__filename,'--motion-child','--root',root,'--output',out],{cwd:workspace,env,windowsHide:true,stdio:['ignore','pipe','pipe']});let stderr='';child.stderr.on('data',v=>{if(stderr.length<5000)stderr+=v;});const timer=setTimeout(()=>{child.kill();reject(new Error('Movie motion check timed out'));},35000);child.once('error',reject);child.once('exit',code=>{clearTimeout(timer);if(code)reject(new Error(stderr||'Movie motion failed'));else resolve();});});const report=JSON.parse(fs.readFileSync(path.join(out,'movie-motion-report.json'),'utf8'));console.log(JSON.stringify(report));}
+async function child(){
+ const {app,BrowserWindow}=require('electron');fs.mkdirSync(out,{recursive:true});app.setPath('userData',fs.mkdtempSync(path.join(out,'profile-')));
+ const report={root,syntheticOnly:true,checks:{},rendererErrors:[]},check=(name,value)=>{report.checks[name]=!!value;if(!value)throw new Error('Movie motion check failed: '+name);};let owner;
+ try{
+  await app.whenReady();const url=f=>pathToFileURL(path.join(root,f)).href;
+  const html='<!doctype html><html><meta charset="UTF-8"><link rel="stylesheet" href="'+url('ui/themes.css')+'"><link rel="stylesheet" href="'+url('ui/movies/carousel.css')+'"><script src="'+url('ui/horizontal-scroll.js')+'" defer></script><script src="'+url('ui/movies/carousel.js')+'" defer></script><style>*{box-sizing:border-box}body{margin:0;padding:24px;background:#100d1c;color:#fff;font:14px Segoe UI}#root{height:330px;width:1120px}.movie-metal-card{height:250px}.movie-metal-card strong{position:absolute;bottom:24px;left:18px}.movie-metal-card img{width:100%;height:100%;object-fit:cover}</style><body class="movies-view"><h1>电影惯性 · 合成诊断</h1><section id="root"></section></body></html>';
+  const fixture=path.join(out,'fixture.html');fs.writeFileSync(fixture,html);
+  owner=new BrowserWindow({show:false,width:1200,height:460,webPreferences:{nodeIntegration:false,contextIsolation:true,sandbox:true,backgroundThrottling:false}});
+  const web=owner.webContents;web.on('console-message',details=>{if(details.level==='error'||details.level===3)report.rendererErrors.push(details.message);});await owner.loadFile(fixture);web.debugger.attach('1.3');await web.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+  const js=code=>web.executeJavaScript(code),until=async(fn,limit=6000)=>{const start=Date.now();while(Date.now()-start<limit){if(await fn())return;try{await web.capturePage();}catch(error){if(!String(error.message).includes('UnknownVizError'))throw error;}await wait(20);}throw new Error('Movie motion condition timed out');};
+  await js(`window.deck=PulseMovieCarousel.create({root:document.getElementById('root'),load:async()=>({items:Array.from({length:60},(_,i)=>({id:String(i),score:8,title:'合成电影 '+(i+1)})),nextOffset:60,hasMore:false}),renderItem:item=>'<button class="movie-metal-card" data-movie-card="'+item.id+'" style="background:linear-gradient(145deg,hsl('+(Number(item.id)*31%360)+' 35% 42%),#111)"><strong>'+item.title+'</strong></button>',onOpen:item=>{window.opened=item.id;}});deck.activate();`);
+  await until(()=>js(`deck.getState().items.length===60`));
+  await js(`window.v=document.querySelector('.movie-carousel-viewport');v.scrollLeft=4500;window.writes=0;window.rectReads=0;window.scrollDescriptor=Object.getOwnPropertyDescriptor(Element.prototype,'scrollLeft');Object.defineProperty(v,'scrollLeft',{get(){return scrollDescriptor.get.call(v)},set(value){writes++;scrollDescriptor.set.call(v,value)}});for(const node of document.querySelectorAll('.movie-metal-card')){const rect=node.getBoundingClientRect.bind(node);node.getBoundingClientRect=()=>{rectReads++;return rect();};}window.pointer=(type,x,stamp)=>v.dispatchEvent(new PointerEvent(type,{pointerId:1,isPrimary:true,pointerType:'mouse',button:0,clientX:x,clientY:150,bubbles:true,cancelable:true}));window.firstNode=v.querySelector('[data-movie-card]');void 0;`);
+  const before=await js('v.scrollLeft');
+  await js(`pointer('pointerdown',1050);window.beforeReads=rectReads;for(let i=1;i<=80;i++)pointer('pointermove',1050-i*8);window.burst={writes,reads:rectReads-beforeReads,frames:deck.getState().motion.pendingFrame};`);
+  report.burst=await js('burst');check('pointerBurstIsFrameCoalesced',report.burst.writes===0&&report.burst.frames);check('noGeometryReadsInPointerMoves',report.burst.reads===0);
+  await until(()=>js('writes>0'));check('singlePaintForBurst',await js('writes===1'));
+  await js(`pointer('pointerup',410);window.release=v.scrollLeft;window.positions=[];window.recording=true;function sample(){if(!recording)return;positions.push(v.scrollLeft);if(deck.getState().motion.pendingFrame)requestAnimationFrame(sample);else recording=false;}requestAnimationFrame(sample);`);
+  await until(()=>js(`!deck.getState().motion.pendingFrame`));
+  const motion=await js(`({state:deck.getState().motion,positions,release,end:v.scrollLeft})`);report.motion={start:before,end:motion.end,release:motion.release,stride:motion.state.stride,maxTravel:motion.state.maxTravel,frames:motion.positions.length};
+  check('flickTravelsBeyondTwoCards',motion.end-before>motion.state.stride*2);check('wholeGestureWithinTenCards',motion.end-before<=motion.state.stride*10+1);check('inertiaContinuesAfterRelease',motion.end>motion.release+1);
+  const deltas=motion.positions.slice(1).map((value,i)=>value-motion.positions[i]).filter(value=>value>.5);check('inertiaSlowsToStop',deltas.length>4&&deltas[0]>deltas[deltas.length-1]*2);
+  await js(`pointer('pointerdown',700);pointer('pointermove',600);pointer('pointerup',600);`);await wait(35);check('secondFlickStarts',await js('deck.getState().motion.pendingFrame'));
+  await js(`pointer('pointerdown',500);window.stopped=v.scrollLeft;`);await wait(80);check('pressStopsImmediately',await js('!deck.getState().motion.pendingFrame&&Math.abs(v.scrollLeft-stopped)<.1'));await js(`pointer('pointercancel',500)`);
+  check('originalCardsRetained',await js('v.querySelector("[data-movie-card]")===firstNode&&deck.getState().items.length===60'));
+  check('nativeImageDragPrevented',await js(`(()=>{const event=new Event('dragstart',{bubbles:true,cancelable:true});v.firstElementChild.dispatchEvent(event);return event.defaultPrevented})()`));
+  await web.capturePage();fs.writeFileSync(path.join(out,'movie-motion.png'),(await web.capturePage()).toPNG());
+  await js('deck.deactivate()');check('deactivateStopsWork',await js('!deck.getState().motion.pendingFrame'));await js('deck.dispose()');check('disposeClearsCards',await js('!document.getElementById("root").children.length'));check('windowAlwaysHidden',!owner.isVisible());check('noRendererErrors',report.rendererErrors.length===0);
+ }catch(error){report.error=String(error.stack||error);process.exitCode=1;}
+ finally{owner?.destroy();fs.writeFileSync(path.join(out,'movie-motion-report.json'),JSON.stringify(report,null,2)+'\n');app.exit(process.exitCode||0);}
+}
+if(process.argv.includes('--motion-child'))child();else runner().catch(error=>{console.error(error.stack);process.exitCode=1;});

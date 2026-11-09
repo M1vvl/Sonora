@@ -1,0 +1,22 @@
+.music-account-root .music-login-sheet.has-official-view{width:min(960px,calc(100vw - 48px));max-width:960px;height:fit-content;max-height:calc(100dvh - 48px);padding:16px;overflow:hidden}
+.music-embedded-official{display:grid;grid-template-rows:auto auto auto;gap:10px;min-width:0;height:fit-content}
+.music-embedded-official[hidden],.music-connection-graph[hidden]{display:none!important}
+.music-embedded-official>header{display:flex;align-items:center;gap:14px;padding-right:38px;min-height:32px}
+.music-embedded-official>header>strong{font-size:13px;flex:1;min-width:0}
+.music-embedded-frame{min-width:0;height:min(65vh,580px,calc(100dvh - 160px));min-height:180px;border-radius:12px;background:var(--surface);overflow:hidden}
+.music-embedded-qq{display:flex;gap:6px}
+.music-embedded-qq[hidden]{display:none!important}
+.music-embedded-qq button{color:var(--text);border:1px solid var(--border);border-radius:8px;background:var(--surface);font:inherit;font-size:11px;padding:6px 10px;cursor:pointer}
+.music-embedded-note{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+.music-login-sheet.has-official-view .music-sheet-heading{height:0;min-height:0;margin:0}
+.music-login-sheet.has-official-view .music-sheet-actions{position:absolute;top:16px;right:16px;z-index:2}
+.music-login-sheet.has-official-view .music-logout{display:none}
+@media(max-width:700px){.music-embedded-official>header{flex-wrap:wrap}.music-embedded-qq{width:100%;justify-content:center}}
+.music-official-playlists{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:auto;scrollbar-width:none}
+.music-official-playlists[hidden]{display:none!important}
+.music-official-playlist{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;color:var(--text);font:inherit;font-size:12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);padding:10px;cursor:pointer}
+.music-official-playlist span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.music-official-playlist small{flex:none;color:var(--muted)}
+
+/* The platform list owns the sheet height, including its reduced five rows. */
+.music-connection-graph{min-height:0}

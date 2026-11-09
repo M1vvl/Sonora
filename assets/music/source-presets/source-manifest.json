@@ -1,0 +1,120 @@
+{
+  "license": "GPL-3.0-only; Three.js MIT",
+  "files": [
+    {
+      "path": "three.r128.min.js",
+      "origin": "public/vendor/three.r128.min.js",
+      "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+      "bytes": 603445,
+      "upstreamSHA256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+      "adaptation": "unchanged"
+    },
+    {
+      "path": "cover-particles-source.js",
+      "origin": "public/js/modules/02-visual/00-pointer-cover-particles.js",
+      "sha256": "a5b9d528a80075af0de7169b35b18baa3b092c2d4749a98f9e3823f9836a1b9a",
+      "bytes": 25636,
+      "upstreamSHA256": "4a33b2209f0455dfccf13cb70abc8e85430edb9ea0db864341aa41a59a77c04a",
+      "adaptation": "Emily and original Sonic star-river source branches, shared geometry and unchanged common shader tail. Unused preset branches omitted."
+    },
+    {
+      "path": "cover-ripples-source.js",
+      "origin": "public/js/modules/02-visual/15-ripples-cover-depth.js",
+      "sha256": "87b6fb3ff567c6c46dc2dd44f5b7b2697d82733576bb10c94a81ff4300e9eb67",
+      "bytes": 2176,
+      "upstreamSHA256": "58862e8d906ff7a33a9e9a58552992449ddf798f4a326216f87dce749acac5e9",
+      "adaptation": "Source function extraction"
+    },
+    {
+      "path": "cover-depth-source.js",
+      "origin": "public/js/modules/02-visual/15-ripples-cover-depth.js",
+      "sha256": "1c7f70b560a868f55098c0d121f041b6ed635ffa0f5490814093c4d5611cd694",
+      "bytes": 3314,
+      "upstreamSHA256": "58862e8d906ff7a33a9e9a58552992449ddf798f4a326216f87dce749acac5e9",
+      "adaptation": "Source function extraction"
+    }
+  ],
+  "adapters": "Shared Emily/original Sonic renderer and independent source lyric compositor. Sonic terrain/audio modules unchanged; no Workshop/Wallpaper variant.",
+  "hostPorts": [
+    {
+      "path": "emily-frame.js",
+      "origins": [
+        "public/js/modules/11-main-loop.js",
+        "public/js/modules/07-fx/04-preset-grid-uniforms.js"
+      ],
+      "adaptation": "Shared source uniforms and gesture/ripple clock. Emily uses preset 0; original Sonic uses preset 7. Separate lyric scene retained.",
+      "upstream": [
+        {
+          "origin": "public/js/modules/11-main-loop.js",
+          "sha256": "46d2f1cffa6ae0d7011124c441ccbdd3f494379f9dd9cd6e2b16a1530fd08514"
+        },
+        {
+          "origin": "public/js/modules/07-fx/04-preset-grid-uniforms.js",
+          "sha256": "959d2f79f8e91fd0802fc357b27eb44e8b6bb7571664d12680e7cc465b1a6f3e"
+        }
+      ]
+    },
+    {
+      "path": "source-scene-cover.js",
+      "origins": [
+        "public/js/modules/03-beat/05-cover-loading-crop.js",
+        "public/js/modules/02-visual/15-ripples-cover-depth.js"
+      ],
+      "adaptation": "Original center-square texture tiers 256/384/512px, previous-cover canvas limited to 256px, 520ms crossfade and 180ms depth/AI smoothstep. Single bounded scene clock replaces extra upstream RAF tweens.",
+      "upstream": [
+        {
+          "origin": "public/js/modules/03-beat/05-cover-loading-crop.js",
+          "sha256": "21b3a012b6ae692d538e5aad41c7da9fea16ff468217df1ddc1b43c47a2df986"
+        },
+        {
+          "origin": "public/js/modules/02-visual/15-ripples-cover-depth.js",
+          "sha256": "58862e8d906ff7a33a9e9a58552992449ddf798f4a326216f87dce749acac5e9"
+        }
+      ]
+    },
+    {
+      "path": "source-space.js",
+      "origins": [
+        "public/js/modules/11-main-loop.js",
+        "public/js/modules/01-scene/02-beat-camera-runtime.js"
+      ],
+      "adaptation": "Original peak/envelope/audio-intensity calculation and outward-rounded non-DC beatBandRms ranges. Independent foreground lyrics and fixed memory budgets retained.",
+      "upstream": [
+        {
+          "origin": "public/js/modules/11-main-loop.js",
+          "sha256": "46d2f1cffa6ae0d7011124c441ccbdd3f494379f9dd9cd6e2b16a1530fd08514"
+        },
+        {
+          "origin": "public/js/modules/01-scene/02-beat-camera-runtime.js",
+          "sha256": "ff573a026361239d90a403ddbf094f6a0e519c3474c8f50014fdada495a2fb7b"
+        }
+      ]
+    }
+  ],
+  "sonicPorts": [
+    {
+      "origin": "sonic-topography-preset.js",
+      "path": "sonic-topography-preset.js",
+      "sha256": "c4b48ae186e5893b87e512e0eb644f97695f3d1f4778505e3ffec652fd31944d",
+      "bytes": 43484,
+      "adaptation": "unchanged"
+    },
+    {
+      "origin": "js/modules/03-beat/06-sonic-audio-monitor.js",
+      "path": "sonic-audio-monitor.js",
+      "sha256": "3818caffc1e0a32410777ce54fc3831594f95ba826f85ec3be502530a54762d0",
+      "bytes": 32882,
+      "adaptation": "unchanged"
+    }
+  ],
+  "sonicShader": {
+    "origin": "public/js/modules/02-visual/00-pointer-cover-particles.js",
+    "starBranchSHA256": "a79c9a806c53e57f1feee27c23b839bbec4a38d6433cd1f75fa16da0fb43784f",
+    "starBranchBytes": 4344,
+    "commonTailSHA256": "0f0cc64ebd0ad6ebc3936fff2462c1f66911d7e3e12502c0330be7ae56a542e9",
+    "retainedPresets": [
+      0,
+      7
+    ]
+  }
+}

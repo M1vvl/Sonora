@@ -1,0 +1,32 @@
+/* Local calendar colors derive from the selected theme; no palette is changed. */
+.token-activity{position:relative;min-width:0;padding:10px 12px;border:1px solid var(--border);border-radius:11px;background:var(--surface);color:var(--text);font-variant-numeric:tabular-nums;--activity-preferred-cell-size:9px;--activity-cell-size:9px;--activity-columns:53;--activity-min-width:581px;--activity-empty:color-mix(in srgb,var(--border) 62%,var(--surface));--activity-color:var(--accent-text,var(--lime))}
+.token-activity [hidden]{display:none!important}
+.token-activity-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:22px;margin-bottom:8px}
+.token-activity-title{display:flex;align-items:center;gap:2px;min-width:0}
+.token-activity-heading h2{font-size:13px;line-height:1.4;font-weight:600;white-space:nowrap;letter-spacing:0}
+.token-activity-modes{display:flex;align-items:center;gap:2px;flex:none}
+.token-activity-modes button{padding:4px 5px;border:0;border-radius:5px;background:transparent;color:var(--muted);font-size:10px;line-height:1.4;white-space:nowrap;transform:none;transition:background-color 120ms ease,color 120ms ease}
+.token-activity-modes button[aria-pressed="true"]{color:var(--accent-text);background:var(--accent-soft);font-weight:600}
+.token-activity-modes button:active{background:var(--surface-raised);transform:none}
+.token-activity-scroll{width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x;padding:2px 0 1px}
+.token-activity-scroll::-webkit-scrollbar{display:none;width:0;height:0}
+.token-activity-chart{width:var(--activity-render-width,100%);min-width:var(--activity-min-width);margin-inline:auto}
+.token-activity-grid{display:grid;grid-template-columns:repeat(var(--activity-columns),var(--activity-cell-size));grid-template-rows:repeat(7,var(--activity-cell-size));gap:2px}
+.token-activity-row{display:contents}
+.token-activity-cell{display:block;min-width:0;min-height:0;width:100%;height:100%;padding:0;border:0;border-radius:2.5px;background:var(--activity-empty);cursor:pointer;transform:none;transition:none;appearance:none;-webkit-app-region:no-drag}
+.token-activity [data-level="1"]{background:color-mix(in srgb,var(--activity-color) 22%,var(--activity-empty))}
+.token-activity [data-level="2"]{background:color-mix(in srgb,var(--activity-color) 40%,var(--activity-empty))}
+.token-activity [data-level="3"]{background:color-mix(in srgb,var(--activity-color) 60%,var(--activity-empty))}
+.token-activity [data-level="4"]{background:color-mix(in srgb,var(--activity-color) 80%,var(--activity-empty))}
+.token-activity [data-level="5"]{background:var(--activity-color)}
+.token-activity-cell:disabled{opacity:.28;cursor:default}
+.token-activity-cell:active:not(:disabled){transform:none}
+.token-activity-cell:focus-visible,.token-activity-modes button:focus-visible{outline:1px solid var(--text);outline-offset:1px}
+.token-activity-months{display:grid;grid-template-columns:repeat(var(--activity-columns),var(--activity-cell-size));column-gap:2px;margin-top:6px;height:14px;color:var(--muted);font-size:10px;line-height:1.4;user-select:none}
+.token-activity-months span{white-space:nowrap;min-width:0;overflow:visible}
+.token-activity-notice{display:grid;place-items:center;width:16px;height:20px;min-width:16px;padding:0;margin:0;border:0;background:transparent;color:var(--muted);line-height:1;transform:none}
+.token-activity-notice svg{display:block;width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.token-activity-tooltip{position:absolute;z-index:20;max-width:calc(100% - 16px);max-height:calc(100% - 16px);overflow:hidden;width:max-content;padding:8px 10px;border:1px solid var(--border-strong);border-radius:9px;background:var(--surface-raised);color:var(--text);box-shadow:0 4px 15px #0003;font-size:11px;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere;pointer-events:none}
+@media(max-height:740px){.token-activity{padding:6px 10px;--activity-preferred-cell-size:8px}.token-activity-heading{min-height:20px;margin-bottom:4px}.token-activity-scroll{padding-block:1px}.token-activity-months{height:12px;margin-top:4px;line-height:1.2}}
+@media(hover:hover) and (pointer:fine){.token-activity-modes button:hover:not([aria-pressed="true"]){color:var(--text);background:var(--surface-raised)}.token-activity-cell:hover:not(:disabled){box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 45%,transparent)}}
+@media(prefers-reduced-motion:reduce){.token-activity-modes button{transition:none}}

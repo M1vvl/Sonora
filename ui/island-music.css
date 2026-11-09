@@ -1,0 +1,36 @@
+.island-music{--island-lyric-ink:#f4f9ff;--island-lyric-highlight:var(--island-song-light,#d1fa6b);position:absolute;inset:0;z-index:2;pointer-events:none;color:inherit;user-select:none}
+.island-music-header{position:absolute;inset:0 0 auto;height:42px}
+.island-music-art{position:absolute;left:32px;top:7px;width:27px;height:28px;display:grid;place-items:center;border-radius:50%;transform-origin:top left;transition:transform 320ms cubic-bezier(.2,.75,.2,1)}
+.island-music-line{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:calc(100% - 238px);height:19px;overflow:hidden;font-size:12px;font-weight:600;line-height:19px;text-align:center;mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
+.island-music-line span{display:block;width:100%;height:19px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.island-music-line .is-leaving{position:absolute;inset:0;opacity:0}
+.island-music-controls{position:absolute;top:8px;right:11px;display:flex;align-items:center;gap:3px;pointer-events:auto}
+.island-music-controls button{width:25px;height:25px;display:grid;place-items:center;border:0;border-radius:50%;padding:4px;background:transparent;color:inherit}
+.island-music-controls button:hover{background:rgba(128,148,164,.16)}
+.island-music-controls svg{width:17px;height:17px}
+.island-music-seek{appearance:none;-webkit-appearance:none;position:absolute;left:16px;right:16px;bottom:0;width:calc(100% - 32px);height:10px;margin:0;padding:0;pointer-events:auto;cursor:pointer;background:transparent;border:0;border-radius:0;color:var(--island-lyric-highlight);opacity:.9;outline-offset:-2px}
+.island-music-seek::-webkit-slider-runnable-track{height:2px;border:0;border-radius:2px;background:linear-gradient(to right,currentColor 0 var(--island-progress,0%),rgba(146,165,181,.28) var(--island-progress,0%) 100%)}
+.island-music-seek::-webkit-slider-thumb{appearance:none;width:0;height:0;border:0;background:transparent;box-shadow:none}
+.island-music-seek:disabled{pointer-events:none;opacity:.65}
+.island-music-details{position:absolute;left:146px;right:20px;top:55px;bottom:29px;overflow:hidden}
+.island-music-details header{height:41px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.island-music-details strong,.island-music-details small{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.island-music-details strong{font-size:14px;line-height:20px;font-weight:650}
+.island-music-details small{font-size:11px;line-height:16px;opacity:.7}
+.island-music-lyrics{height:114px;display:flex;flex-direction:column;justify-content:center;gap:5px;text-align:center;overflow:hidden;mask-image:linear-gradient(transparent,#000 16%,#000 84%,transparent)}
+.island-music-lyrics p{margin:0;font-size:12px;line-height:19px;flex:none;opacity:.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.island-music-lyrics p.is-current{font-weight:650;opacity:1;transform:translateY(-1px)}
+html[data-glass-ink="dark"] .island-music{--island-lyric-ink:#081a22;--island-lyric-highlight:var(--island-song-dark,#266b2b)}
+.island-music-line span,.island-music-lyrics p.is-current{color:var(--island-lyric-highlight)}
+.island-music-line.is-title span{color:inherit;background-image:none;-webkit-text-fill-color:currentColor}
+@supports (background-clip:text){
+ .island-music-line span,.island-music-lyrics p.is-current{background-image:linear-gradient(90deg,var(--island-lyric-highlight) 0%,var(--island-lyric-highlight) var(--lyric-reveal,0%),var(--island-lyric-ink) calc(var(--lyric-reveal,0%) + 6%),var(--island-lyric-ink) 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none}
+}
+.island-music-clock{display:flex;justify-content:space-between;gap:10px;font-size:9px;line-height:12px;font-variant-numeric:tabular-nums;opacity:.72}
+.island.expanded[data-page="music"] .island-music-art{transform:translate(-11px,47px) scale(3.8)}
+.island.expanded[data-page="music"] .island-music-line{opacity:0}
+.island.expanded[data-page="music"] .island-music-seek{left:146px;right:20px;bottom:16px;width:calc(100% - 166px)}
+.island-music-notice{position:absolute;left:80px;right:96px;top:13px;margin:0;font-size:11px;line-height:18px;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:inherit;background:rgba(65,79,94,.92);border-radius:6px;padding:0 5px}
+.island[data-page="music"]>.island-header{z-index:3;pointer-events:none}
+.island[data-page="music"]>.island-header .drag-handle{pointer-events:auto}
+@media(prefers-reduced-motion:reduce){.island-music-art{transition:none}.island-music-line .is-leaving{display:none}}

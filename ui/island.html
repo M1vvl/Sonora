@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN" data-material="css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'">
+  <title>Sonara · 灵动岛</title>
+  <link rel="stylesheet" href="island.css">
+  <link rel="stylesheet" href="liquid-edge.css">
+  <link rel="stylesheet" href="island-drag.css">
+  <link rel="stylesheet" href="activity-feed.css">
+  <link rel="stylesheet" href="header-status.css">
+  <link rel="stylesheet" href="media-cover.css">
+  <link rel="stylesheet" href="island-music.css">
+  <script src="text-preview.js" defer></script>
+  <script src="harness-summary.js" defer></script>
+  <script src="activity-feed.js" defer></script>
+  <script src="header-status.js" defer></script>
+  <script src="cover-palette.js" defer></script>
+  <script src="island-music.js" defer></script>
+  <script src="island.js" defer></script>
+  <script src="liquid-edge.js" defer></script>
+  <script src="audio-visualizer.js" defer></script>
+  <script src="media-cover.js" defer></script>
+</head>
+<body>
+  <section class="island" id="island" aria-label="Sonara 实时监控">
+    <div class="island-header">
+      <div class="drag-handle" title="下拉切换自动隐藏，横滑切换页面"><span></span><span></span><span></span></div>
+      <button id="island-toggle" class="island-toggle" aria-expanded="false" aria-label="展开实时监控">
+        <span class="agent-avatar" id="agent-avatar"><span class="agent-orb" id="agent-orb" data-agent="Codex"><svg viewBox="0 0 28 24" fill="none" class="agent-cloud" aria-hidden="true"><defs><linearGradient id="pulse-cloud" x1="9" y1="4" x2="18" y2="21" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".55" stop-color="#eeeef9"/><stop offset="1" stop-color="#b8bbd3"/></linearGradient></defs><path d="M8 18.6a5.25 5.25 0 0 1-.6-10.47A7.25 7.25 0 0 1 21.35 9.5a4.55 4.55 0 0 1-.9 9.1H8Z" fill="url(#pulse-cloud)"/><path d="M8 9.4a5.6 5.6 0 0 1 10.1-2.7" stroke="#fff" stroke-opacity=".7" stroke-width="1.15" stroke-linecap="round"/><path d="m10.5 18.1-1 2.2 4-1.7" fill="#d2d3e7"/></svg></span><img id="music-cover" hidden alt=""></span>
+        <span class="island-copy"><span class="island-label"><span id="island-agent">SONARA</span><i class="status-dot" id="island-status"></i><span id="island-status-label">等待会话</span></span><span class="island-title" id="island-title" aria-live="polite"></span></span>
+        <span class="compact-metrics"><strong id="island-tokens">—</strong><small id="island-cost">本地监控</small></span>
+      </button>
+    </div>
+    <p class="island-mode-feedback" id="island-mode-feedback" role="status" hidden></p>
+    <div class="island-details" id="island-details" hidden>
+      <div class="detail-topline"><div class="island-session-stack"><select id="island-session-select" name="island-session" aria-label="灵动岛显示的对话" title="选择对话，或自动跟随活动"><button type="button" class="session-select-button"><selectedcontent></selectedcontent></button><option value="">自动跟随活动</option></select></div></div>
+      <div class="island-token-grid"><div><small>历史输入</small><strong id="expanded-input">—</strong></div><div><small>历史缓存</small><strong id="expanded-cached">—</strong></div><div><small>历史输出</small><strong id="expanded-output">—</strong></div><div><small>历史金额 · USD</small><strong id="expanded-cost">—</strong></div></div>
+      <section class="activity-feed" id="activity-feed" aria-label="最近活动"><div id="activity-viewport" class="activity-viewport" tabindex="0"><div id="activity-track" class="activity-track"></div></div></section>
+    </div>
+  </section>
+</body>
+</html>

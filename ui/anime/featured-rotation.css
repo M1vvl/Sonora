@@ -1,0 +1,18 @@
+/* Hero controls remain siblings of the detail button: no nested hit targets. */
+.anime-featured-rotator{position:relative;min-width:0;min-height:310px;border-radius:var(--anime-radius);overflow:hidden;isolation:isolate}
+.anime-rotation-scene,.anime-rotation-scene>.anime-hero{width:100%;height:100%;min-height:310px}
+.anime-featured-rotator .anime-hero .anime-feature-copy{left:64px;bottom:52px}
+.anime-featured-rotator .anime-feature-label{left:25px}
+.anime-featured-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:40px;height:44px;padding:8px;border:1px solid #ffffff40;border-radius:15px;color:#fff;background:#12131c60;backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 #ffffff20;touch-action:manipulation}
+.anime-featured-previous{left:12px}.anime-featured-next{right:12px}
+.anime-featured-arrow svg{display:block;width:22px;height:22px}
+.anime-featured-arrow:active:not(:disabled){transform:translateY(-50%) scale(.95)}
+.anime-featured-dots{position:absolute;z-index:3;left:50%;bottom:13px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:1px;max-width:calc(100% - 112px);padding:2px 5px;border:1px solid #ffffff26;border-radius:20px;background:#12131c55;backdrop-filter:blur(10px)}
+.anime-featured-dot{display:grid;place-items:center;flex:0 0 24px;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:none;color:#fff;touch-action:manipulation}
+.anime-featured-dot::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:#ffffff73;transition:background-color 140ms ease,transform 140ms ease}
+.anime-featured-dot[aria-current=true]::before{background:#fff;transform:scale(1.25)}
+.anime-featured-dot:active:not(:disabled){transform:none}
+.anime-featured-dot:focus-visible,.anime-featured-arrow:focus-visible{outline:2px solid var(--accent-text);outline-offset:-2px}
+@media(hover:hover) and (pointer:fine){.anime-featured-arrow:hover{background:#12131c9c}.anime-featured-dot:hover::before{background:#fff}}
+@media(prefers-reduced-motion:reduce){.anime-featured-dot::before{transition:none}.anime-featured-arrow:active:not(:disabled){transform:translateY(-50%)}}
+@media(prefers-contrast:more){.anime-featured-arrow,.anime-featured-dots{background:#111e;border-color:#fff}}

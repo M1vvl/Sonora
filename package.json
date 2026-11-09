@@ -1,0 +1,94 @@
+{
+  "name": "sonara",
+  "version": "0.3.41",
+  "description": "Sonara local Agent monitor and online music workspace with a desktop island",
+  "main": "src/main.cjs",
+  "author": "Sonara",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "smoke": "node scripts/smoke.cjs",
+    "pack": "electron-builder --win dir --x64",
+    "dist": "electron-builder --win portable --x64",
+    "build:audio": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/audio/build.ps1",
+    "predist": "npm run build:audio && npm run build:media && npm run build:player && npm run build:source",
+    "prepack": "npm run build:audio && npm run build:media && npm run build:player && npm run build:source",
+    "build:media": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/media/build.ps1",
+    "release": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/release.ps1",
+    "build:source": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/build-source.ps1",
+    "build:player": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/player/build.ps1"
+  },
+  "devDependencies": {
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "local.agentpulse.desktop",
+    "productName": "Sonara",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "ui/**/*",
+      "config/**/*",
+      "assets/**/*",
+      "!assets/music/source-presets/assets/skull-decimation-points.bin",
+      "!assets/music/presets/{planet,record,ripple,stars,tranquil,tunnel,void}.png",
+      "package.json",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/koffi/**",
+      "node_modules/@koromix/**"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.ico",
+      "signExecutable": false
+    },
+    "portable": {
+      "artifactName": "Sonara-${version}-Windows.exe"
+    },
+    "extraResources": [
+      {
+        "from": "native/audio/bin/AgentPulse.AudioProbe.exe",
+        "to": "native/audio/AgentPulse.AudioProbe.exe"
+      },
+      {
+        "from": "native/media/bin/AgentPulse.MediaProbe.exe",
+        "to": "native/media/AgentPulse.MediaProbe.exe"
+      },
+      {
+        "from": "native/ech",
+        "to": "native/ech"
+      },
+      {
+        "from": "assets/licenses",
+        "to": "licenses"
+      },
+      {
+        "from": "artifacts/corresponding-source.zip",
+        "to": "corresponding-source.zip"
+      },
+      {
+        "from": "native/player/bin/AgentPulse.Player.exe",
+        "to": "native/player/AgentPulse.Player.exe"
+      },
+      {
+        "from": "native/player/resources",
+        "to": "native/player"
+      }
+    ]
+  },
+  "dependencies": {
+    "hls.js": "^1.7.4",
+    "jsdom": "^30.1.3",
+    "koffi": "3.3.4",
+    "qrcode": "1.5.4"
+  }
+}

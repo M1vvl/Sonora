@@ -1,0 +1,55 @@
+name: Publish Windows release
+on:
+  push:
+    branches: [main]
+    paths: [package.json]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: windows-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Detect version
+        id: version
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version=(Get-Content package.json -Raw|ConvertFrom-Json).version
+          "version=$version" >> $env:GITHUB_OUTPUT
+          gh release view "v$version" --repo $env:GITHUB_REPOSITORY 2>$null
+          "exists=$($LASTEXITCODE -eq 0)" >> $env:GITHUB_OUTPUT
+          exit 0
+      - if: steps.version.outputs.exists != 'True'
+        run: npm ci
+      - if: steps.version.outputs.exists != 'True'
+        run: node --test tests/music-account-location.test.cjs tests/app-updates.test.cjs
+      - if: steps.version.outputs.exists != 'True'
+        name: Build portable application
+        shell: pwsh
+        run: |
+          ./scripts/build-source.ps1
+          if(!$?){exit 1}
+          ./node_modules/.bin/electron-builder.cmd --win portable --x64
+          if($LASTEXITCODE -ne 0){exit $LASTEXITCODE}
+      - if: steps.version.outputs.exists != 'True'
+        name: Publish verified artifact
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $exe="release/Sonara-$env:VERSION-Windows.exe"
+          $hash=(Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  Sonara-$env:VERSION-Windows.exe" | Set-Content release/SHA256SUMS.txt
+          gh release create "v$env:VERSION" $exe release/SHA256SUMS.txt --repo $env:GITHUB_REPOSITORY --title "Sonara $env:VERSION" --generate-notes
+          if($LASTEXITCODE -ne 0){exit $LASTEXITCODE}

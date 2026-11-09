@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: pulse-anime-image: pulse-movie-image: pulse-music-image: pulse-visual-media:; media-src 'self' blob: pulse-music-audio: pulse-visual-media:; frame-src 'self' pulse-visual-media:; connect-src pulse-music-image: pulse-visual-media:">
+  <title>Sonara · 本地 Agent 监控</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="dashboard-details.css">
+  <link rel="stylesheet" href="dashboard-v2.css">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="stylesheet" href="token-activity.css">
+  <link rel="stylesheet" href="dashboard-layout.css">
+  <link rel="stylesheet" href="dashboard-drag.css">
+  <link rel="stylesheet" href="anime/anime.css">
+  <link rel="stylesheet" href="anime/featured-rotation.css">
+  <link rel="stylesheet" href="movies/movies.css">
+  <link rel="stylesheet" href="movies/carousel.css">
+  <link rel="stylesheet" href="music/music.css">
+  <link rel="stylesheet" href="music/account.css">
+  <link rel="stylesheet" href="music/cards.css">
+  <link rel="stylesheet" href="music/library.css">
+  <link rel="stylesheet" href="music/lyrics.css">
+  <link rel="stylesheet" href="music/lyric-motion.css">
+  <link rel="stylesheet" href="music/immersive.css">
+  <link rel="stylesheet" href="music/playlist-stage.css">
+  <link rel="stylesheet" href="music/immersive-transport.css">
+  <script src="themes.js" defer></script>
+  <script src="dashboard-material.js" defer></script>
+  <script src="app-updates.js" defer></script>
+  <script src="music/account-location.js" defer></script>
+  <script src="cover-loading.js" defer></script>
+  <script src="horizontal-scroll.js" defer></script>
+  <script src="movies/carousel.js" defer></script>
+  <script src="anime/featured-rotation.js" defer></script>
+  <script src="anime/index.js" defer></script>
+  <script src="music/account.js" defer></script>
+  <script src="music/track-options.js" defer></script>
+  <script src="music/queue.js" defer></script>
+  <script src="music/remote-clock.js" defer></script>
+  <script src="music/player.js" defer></script>
+  <script src="music/playlist-loader.js" defer></script>
+  <script src="music/music-workspace.js" defer></script>
+  <script src="music/cards.js" defer></script>
+  <script src="music/feedback.js" defer></script>
+  <script src="music/audio-analysis.js" defer></script>
+  <script src="music/lyric-material.js" defer></script>
+  <script src="music/lyric-motion.js" defer></script>
+  <script src="music/lyrics.js" defer></script>
+  <script src="music/playlist-stage.js" defer></script>
+  <script src="music/library.js" defer></script>
+  <script src="music/visual-settings.js" defer></script>
+  <script src="music/visual-renderer.js" defer></script>
+  <script src="music/immersive-transport.js" defer></script>
+  <script src="music/immersive.js" defer></script>
+  <script src="music/playback-session.js" defer></script>
+  <script src="music/interaction-policy.js" defer></script>
+  <script src="music/index.js" defer></script>
+  <script src="token-activity-model.js" defer></script>
+  <script src="token-activity.js" defer></script>
+  <script src="dashboard-state.js" defer></script>
+  <script src="dashboard-workspace.js" defer></script>
+  <script src="dashboard.js" defer></script>
+  <script src="dashboard-drag.js" defer></script>
+  <link rel="stylesheet" href="glass-select.css">
+  <link rel="stylesheet" href="dashboard-material.css">
+</head>
+<body>
+  <div class="app-shell">
+    <main>
+      <header class="topbar" aria-hidden="true"></header>
+      <div class="content-scroll">
+        <section id="monitor-view" aria-label="监控">
+          <div class="range-toolbar">
+            <div class="range-controls"><div class="range-tabs" role="group" aria-label="统计范围"><button class="active" data-range="today">每日用量</button><button data-range="history">完整历史</button></div><label class="day-picker" id="day-picker"><span>日期 · 北京时间</span><input type="date" id="usage-date" aria-label="查看某日用量"></label></div>
+            <div class="heading-actions"><button class="button secondary" id="refresh-button"><span data-icon="refresh"></span>刷新</button><button class="button accent" id="island-button"><span data-icon="island"></span><span id="island-button-label">灵动岛已开启</span></button></div>
+          </div>
+          <div class="stats-grid" id="stats-grid">
+            <article class="stat-card"><div class="stat-label"><span id="metric-token-label">今日 Token</span> <span data-icon="tokens"></span></div><strong class="stat-number" id="today-tokens">—</strong><div class="stat-detail" id="today-detail">等待本地会话记录</div><div class="stat-spark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+            <article class="stat-card"><div class="stat-label"><span id="metric-cost-label">今日 Token 金额</span> <span data-icon="dollar"></span></div><strong class="stat-number money" id="today-cost">—</strong><div class="stat-detail" id="today-price-detail">USD · 官方 API 单价估算</div><div class="stat-footnote">随实时 Token 增量更新</div></article>
+            <article class="stat-card"><div class="stat-label">活动会话 <span data-icon="activity"></span></div><strong class="stat-number" id="active-sessions">—<small>个</small></strong><div class="stat-detail" id="active-detail">检测 Codex 与 Claude Code</div><div id="process-chips" class="process-chips"></div></article>
+            <article class="stat-card"><div class="stat-label">输入缓存命中 <span data-icon="cache"></span></div><strong class="stat-number" id="cache-percent">—</strong><div class="stat-detail" id="cache-detail">缓存输入 / 总输入</div><div class="cache-track"><div id="cache-track-fill"></div></div></article>
+          </div>
+          <div class="history-overview" id="history-overview"><span>完整历史 <strong id="history-total">—</strong> Token</span><span>历史金额 <strong id="history-cost">—</strong></span><span>今日 <strong id="history-today-total">—</strong> Token · <strong id="history-today-cost">—</strong></span></div>
+          <div class="monitor-grid">
+            <div class="monitor-left-column">
+            <section class="sessions-panel panel"><div class="panel-heading"><h2>项目与对话 <span class="count-pill" id="session-count">0</span></h2><span class="muted tiny" id="session-scope">本地记录</span></div><div class="search-field"><span data-icon="search"></span><input id="session-search" placeholder="搜索项目、对话或模型…" autocomplete="off" aria-label="搜索会话"><kbd>/</kbd></div><div class="agent-filters" role="group" aria-label="筛选 Agent"><button class="filter-button active" data-agent="all">全部</button><button class="filter-button" data-agent="Codex">Codex</button><button class="filter-button" data-agent="Claude">Claude</button></div><div id="sessions-list" class="sessions-list" aria-live="polite"><div class="empty-state"><span data-icon="layers"></span><strong>正在发现本地会话</strong><p>会话出现后，用量会在这里自动更新。</p></div></div><div class="list-footer"><i class="small-dot"></i><span id="last-sync">尚未同步</span></div></section>
+            <section class="panel" id="token-activity" data-no-window-drag aria-label="Token 活动"></section>
+            </div>
+            <section class="detail-panel panel" id="detail-panel" aria-label="会话详情"><div class="empty-state detail-empty"><span data-icon="activity"></span><strong>选择一个会话</strong><p>查看模型用量、工具调用与实时活动。</p></div></section>
+          </div>
+        </section>
+        <section id="anime-view" hidden aria-label="番剧"></section>
+        <section id="movies-view" hidden aria-label="影视"></section>
+        <section id="music-view" hidden aria-label="音乐"></section>
+        <section id="settings-view" hidden aria-label="设置">
+          <div class="settings-grid">
+            <section class="panel settings-panel theme-panel"><div class="theme-panel-header"><h2>界面主题</h2><div class="material-actions"><label for="setting-dashboard-glass">拟态玻璃<input class="switch" type="checkbox" id="setting-dashboard-glass"></label><button type="button" class="material-settings-button" id="dashboard-transparency-button" aria-label="调整界面透明度"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--surface)"/><circle cx="15" cy="17" r="3" fill="var(--surface)"/></svg></button></div></div><p id="dashboard-glass-status" class="material-status">开启后使用当前主题的透明表面</p><p class="settings-description">按参考配色排列，选择后立即应用并保存。</p><div id="theme-options" role="group" aria-label="主题选择"></div><label class="setting-row"><span><strong>灵动岛液态边缘</strong><small id="liquid-edge-status">取轮廓外邻近背景折射到边缘，截图和录屏仍可见；采样仅在内存中处理。</small></span><select id="setting-liquid-edge"><option value="refract">实时边缘折射</option><option value="light">仅动态边缘光效</option><option value="off">关闭边缘光效</option></select></label></section>
+            <section class="panel settings-panel"><h2>桌面体验</h2><p class="settings-description">灵动岛让当前活动停留在视线边缘。</p><div class="setting-row"><span><strong>显示灵动岛</strong><small>在桌面顶部显示当前会话与用量</small></span><span class="material-actions"><button type="button" class="material-settings-button" id="island-transparency-button" aria-label="调整灵动岛透明度"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--surface)"/><circle cx="15" cy="17" r="3" fill="var(--surface)"/></svg></button><input class="switch" type="checkbox" id="setting-island" aria-label="显示灵动岛"></span></div><label class="setting-row"><span><strong>自动隐藏灵动岛</strong><small>下拉切换固定与隐藏，悬停桌面顶端显示，双击展开</small></span><input class="switch" type="checkbox" id="setting-island-autohide"></label><label class="setting-row"><span><strong>灵动岛始终置顶</strong><small>切换其他窗口时保持可见</small></span><input class="switch" type="checkbox" id="setting-topmost"></label><label class="setting-row"><span><strong>灵动岛材质</strong><small id="material-status">正在检查系统材质设置</small></span><select id="setting-material"><option value="acrylic">自动 · 系统磨砂 / 清透降级</option><option value="css">始终清透</option></select></label><label class="setting-row"><span><strong>消息切换</strong><small>新消息向上替换，可手动滚动阅读长消息</small></span><select id="setting-activity-motion"><option value="scroll">向上滚动替换</option><option value="system">跟随系统动态效果</option><option value="still">即时替换</option></select></label><label class="setting-row"><span><strong>登录 Windows 时启动</strong><small>启动后在后台监控本地会话</small></span><input class="switch" type="checkbox" id="setting-autostart"></label><label class="setting-row"><span><strong>刷新频率</strong><small>从本地记录中获取最新活动</small></span><select id="setting-interval"><option value="1000">每 1 秒</option><option value="1500">每 1.5 秒</option><option value="3000">每 3 秒</option><option value="5000">每 5 秒</option></select></label></section>
+            <section class="panel settings-panel music-settings-panel"><h2>音乐律动</h2><div class="setting-row"><span style="min-width:0"><strong>账户保存地址</strong><small id="account-location-path" style="overflow-wrap:anywhere">正在读取</small><small id="account-location-status">登录信息使用本机加密保存；平台会话过期后需重新登录。</small></span><button type="button" class="button" id="account-location-choose" style="flex:none">选择文件夹</button></div><p class="settings-description">自动跟随正在播放的声音，暂停后回落。</p><label class="setting-row"><span><strong>灵动岛音频律动</strong><small>默认开启，无需选择播放器</small></span><input class="switch" type="checkbox" id="setting-music"></label><label class="setting-row"><span><strong>识别范围</strong><small>用于自定义，默认自动识别全部音频</small></span><select id="setting-audio-source"><option value="auto">自动识别音频</option><option value="music">仅常见音乐播放器</option></select></label><label class="setting-row"><span><strong>当前歌曲封面</strong><small>识别到播放器时自动替换 Agent 图标</small></span><input class="switch" type="checkbox" id="setting-music-cover"></label><label class="setting-row"><span><strong>封面动效</strong><small>播放时旋转，暂停时停止</small></span><select id="setting-cover-motion"><option value="rotate">播放时旋转</option><option value="system">跟随系统动态效果</option><option value="still">静止封面</option></select></label><p class="settings-description">分析默认输出设备的混合声音，多个声音会一起影响律动。仅在本机分析，不使用麦克风、不保存音频。</p></section>
+          </div>
+        </section>
+      </div>
+    </main>
+    <aside class="dashboard-rail" aria-label="应用操作">
+      <nav class="rail-navigation" aria-label="主导航">
+        <button class="nav-button rail-button active" id="nav-overview" data-view="overview" aria-label="总览" title="总览"><span data-icon="grid" aria-hidden="true"></span><span class="rail-label">总览</span></button>
+        <button class="nav-button rail-button" id="nav-anime" data-view="anime" aria-label="番剧" title="番剧"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="4"/><path d="m8 2 4 4 4-4M8 12h.01M16 12h.01M9 16h6"/></svg><span class="rail-label">番剧</span></button>
+        <button class="nav-button rail-button" id="nav-movies" data-view="movies" aria-label="影视" title="影视"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg><span class="rail-label">影视</span></button>
+        <button class="nav-button rail-button" id="nav-music" data-view="music" aria-label="音乐" title="音乐"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 17V5l11-2v12M9 9l11-2"/><ellipse cx="6" cy="18" rx="3" ry="3"/><ellipse cx="17" cy="16" rx="3" ry="3"/></svg><span class="rail-label">音乐</span></button>
+        <button class="nav-button rail-button" id="nav-settings" data-view="settings" aria-label="设置" title="设置"><span data-icon="settings" aria-hidden="true"></span><span class="rail-label">设置</span></button>
+      </nav>
+      <button class="rail-button rail-update" id="app-update-button" hidden type="button" aria-label="安装 Sonara 更新" title="更新软件"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button>
+      <button class="rail-button rail-exit" id="close-button" aria-label="关闭面板，保留后台监控和音乐" title="关闭面板，保留后台监控和音乐"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 4H4v16h6M9 12h11m-5-5 5 5-5 5"/></svg></button>
+    </aside>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog class="material-transparency-dialog" id="material-transparency-dialog" aria-labelledby="material-transparency-title"><header><h3 id="material-transparency-title">界面透明度</h3><button type="button" class="material-settings-button" id="material-transparency-close" aria-label="关闭透明度设置">×</button></header><label class="opacity-control"><input type="range" id="material-transparency" min="10" max="82" step="1" aria-label="透明度"><output id="material-transparency-value">40%</output></label><p>数值越高，背景越通透。文字保持清晰。</p></dialog>
+</body>
+</html>

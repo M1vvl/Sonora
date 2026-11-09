@@ -1,0 +1,15 @@
+{
+  "origin": "User-provided Kazumi-main/assets/shaders",
+  "algorithm": "SHA-256",
+  "files": {
+    "Anime4K_AutoDownscalePre_x2.glsl": "8c58291740146bd766a4d73f132775a797fe80f7d07919b5d767e27a5dc85656",
+    "Anime4K_AutoDownscalePre_x4.glsl": "5af62d8cd844916dc1126613e13bad3beab195787f93a71200b47c6ec78f2e41",
+    "Anime4K_Clamp_Highlights.glsl": "a2a9bf7fbc1d75d09660ca2e701e4d7fb0cf5457b94da47e1825032fa2b3671a",
+    "Anime4K_Restore_CNN_M.glsl": "67ea3ed26539e8de3b7d307688535d2ff17e8d147e11dda0247da7770dbecf41",
+    "Anime4K_Restore_CNN_S.glsl": "97c24dc370ab300c108bfaa09db7f175aeff343674842c299cf3940a3d330427",
+    "Anime4K_Restore_CNN_VL.glsl": "35036722733305cd4d4e57660b883bbe2569ba2914033c254327107d7b77e35e",
+    "Anime4K_Upscale_CNN_x2_M.glsl": "716e02098a68f0d648761f2b96b4dd139e1cb09b174bb369fca3aa34328fff7e",
+    "Anime4K_Upscale_CNN_x2_S.glsl": "4c53ec2e287908f7ee7bcb266b0170421626d663576468b7d7dafc62962649a4",
+    "Anime4K_Upscale_CNN_x2_VL.glsl": "5638fe31c37c151a3443fea3451a3ef91af073f4dbb9615f6c0d1e29db11493d"
+  }
+}

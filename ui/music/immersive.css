@@ -1,0 +1,68 @@
+.music-immersive{position:fixed;inset:0;z-index:300;isolation:isolate;overflow:hidden;background:var(--bg);color:var(--visual-text,#fff);transform:translateY(100%);font-family:system-ui,sans-serif}
+.music-immersive[hidden]{display:none!important}
+.music-visual-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.music-visual-canvas{z-index:-2}
+.music-immersive::before{position:absolute;inset:0;content:'';z-index:-1;pointer-events:none;background:linear-gradient(#0002,#0000 45%,#0007)}
+.music-immersive-header{position:absolute;top:24px;right:24px;display:flex;align-items:center;gap:12px;z-index:5}
+.music-immersive-home,.music-visual-trigger{display:grid;place-items:center;flex:none;width:42px;height:42px;padding:11px;border-radius:50%;border:1px solid #ffffff55;background:color-mix(in srgb,var(--surface-raised) 55%,transparent);color:var(--visual-text);backdrop-filter:blur(16px) saturate(130%);box-shadow:inset 0 1px 1px #fff3,0 4px 20px #0003;cursor:pointer}
+.music-immersive-home svg,.music-visual-trigger svg{width:20px;height:20px}
+.music-immersive .music-account-host{position:relative;min-width:0}
+.music-immersive-lyrics{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:.7em;width:min(80%,980px);max-height:68%;overflow:hidden;pointer-events:none;color:var(--visual-text);font-size:var(--lyric-size,20px);font-weight:var(--lyric-weight,650);line-height:1.4;text-align:center}
+.music-immersive-line{opacity:.36;flex:none;max-width:100%;text-align:center;transform:translateY(0);transition:opacity 250ms ease,transform 250ms cubic-bezier(.2,.7,.2,1)}
+.music-immersive-line.is-current{opacity:1;transform:translateY(-3px);color:var(--visual-text)}
+.music-immersive-line small{display:block;font-size:var(--lyric-translation-size,.65em);margin-top:var(--lyric-translation-gap,.75em);opacity:var(--lyric-translation-opacity,.8);font-weight:500}
+.music-immersive[data-lyric-mode=immersive] .music-immersive-line:not(.is-current){filter:blur(.3px)}
+.music-immersive[data-lyric-motion=false] .music-immersive-line{transition:none;transform:none}
+.music-immersive-player{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:min(1120px,calc(100% - 96px));height:82px;z-index:4}
+.music-immersive .music-player-root{height:100%;min-width:0}
+.music-immersive .music-player-bar{background:color-mix(in srgb,var(--surface-raised) calc(var(--visual-glass,.2)*100%),transparent);backdrop-filter:blur(20px) saturate(140%);border-color:#ffffff55;box-shadow:inset 0 1px 2px #ffffff38,0 8px 35px #0004}
+.music-immersive .music-transport{display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;flex-wrap:nowrap;gap:9px}
+.music-immersive-diy{font-size:9px!important;font-weight:750!important;width:32px!important}
+.music-visual-trigger{position:absolute;bottom:126px;right:24px;z-index:7;width:48px;height:48px}
+.music-visual-trigger[hidden],.music-visual-panel[hidden]{display:none!important}
+.music-visual-panel{position:absolute;z-index:8;right:16px;top:16px;bottom:124px;width:min(392px,calc(100% - 32px));display:flex;flex-direction:column;min-height:0;border:1px solid #ffffff40;border-radius:22px;padding:16px;background:color-mix(in srgb,var(--surface) 82%,transparent);color:var(--text);backdrop-filter:blur(24px) saturate(135%);box-shadow:inset 0 1px 0 #ffffff25,0 15px 50px #0006}
+.music-visual-panel>header{display:flex;align-items:flex-start;gap:12px;padding:0 0 13px;border-bottom:1px solid var(--border);flex:none}
+.music-visual-panel>header>div{flex:1;display:flex;flex-direction:column;gap:4px}
+.music-visual-panel>header strong{font-size:15px}.music-visual-panel>header small{font-size:10px;letter-spacing:.05em;color:var(--muted)}
+.music-visual-panel button,.music-visual-panel input,.music-visual-panel select{font:inherit}
+.music-visual-panel button{cursor:pointer;color:var(--text);border:1px solid var(--border);border-radius:9px;background:color-mix(in srgb,var(--surface-raised) 45%,transparent);padding:7px}
+.music-visual-panel button:disabled{opacity:.45;cursor:default}
+.music-visual-panel>header button{display:grid;place-items:center;width:28px;height:28px;padding:5px}.music-visual-panel>header svg{width:16px;height:16px}
+.music-visual-tools{display:flex;align-items:center;gap:5px;margin:12px 0 8px;flex:none}
+.music-visual-tools input{min-width:0;flex:1;background:transparent;border:1px solid var(--border);border-radius:9px;padding:9px 7px;color:var(--text);font-size:11px;outline:none}.music-visual-tools button{font-size:10px;padding:7px 5px}
+.music-visual-tabs{display:flex;gap:3px;padding:4px;border:1px solid var(--border);border-radius:11px;flex:none}
+.music-visual-tabs button{flex:1;padding:6px 3px;border:0;background:transparent;font-size:10px;white-space:nowrap}.music-visual-tabs button[aria-selected=true]{background:var(--surface-raised);box-shadow:inset 0 0 0 1px var(--border-strong)}
+.music-visual-content{flex:1;min-height:0;overflow:auto;scrollbar-width:none;padding-top:13px}.music-visual-content::-webkit-scrollbar{display:none}
+.music-visual-group{padding:12px;margin:0 0 10px;border:1px solid var(--border);border-radius:15px;background:color-mix(in srgb,var(--surface-raised) 35%,transparent);box-shadow:inset 0 1px 1px #ffffff15}
+.music-visual-group h3{font-size:12px;margin:0 0 11px;font-weight:650}.music-visual-group p,.music-visual-note{font-size:10px;line-height:1.7;color:var(--muted)}
+.music-visual-preset-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:22px}
+.music-visual-preset-heading input{appearance:none;flex:none;width:32px;height:19px;margin:0;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface);cursor:pointer;position:relative;transition:background 160ms ease}
+.music-visual-preset-heading input::before{content:'';position:absolute;left:3px;top:3px;width:11px;height:11px;border-radius:50%;background:var(--text);transition:transform 160ms ease}
+.music-visual-preset-heading input:checked{background:var(--accent);border-color:var(--accent)}
+.music-visual-preset-heading input:checked::before{transform:translateX(13px);background:var(--accent-ink,var(--bg))}
+.music-visual-preset-heading input:focus-visible{outline:1px solid var(--text);outline-offset:3px}
+.music-visual-presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.music-visual-presets button{height:92px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;padding:10px;border-radius:12px;overflow:hidden;position:relative;background:var(--bg)}.music-visual-presets button strong{position:relative;font-size:11px;z-index:1;text-shadow:0 1px 5px #000}.music-visual-presets button[aria-pressed=true]{border-color:var(--visual-accent);box-shadow:inset 0 0 0 1px var(--visual-accent)}
+.music-visual-field{display:flex;align-items:center;gap:8px;min-width:0;padding:11px 0;border-top:1px solid var(--border);font-size:11px}.music-visual-field>span{min-width:70px;flex:none;color:var(--muted)}.music-visual-field input[type=range]{min-width:30px;width:100%;flex:1;accent-color:var(--visual-accent);height:4px}.music-visual-field input[type=checkbox]{margin-left:auto;accent-color:var(--visual-accent)}.music-visual-field input[type=color]{width:43px;height:25px;margin-left:auto;border:0;border-radius:7px;background:transparent}.music-visual-field output{font-size:10px;width:34px;text-align:right;font-variant-numeric:tabular-nums}.music-visual-field select{margin-left:auto;min-width:0;max-width:165px;border:1px solid var(--border);padding:5px;border-radius:7px;background:var(--surface);color:var(--text);font-size:10px}.music-visual-field .music-visual-reset{background:transparent;border:0;padding:3px;color:var(--muted)}
+.music-visual-wide{display:block;width:100%;text-align:left;margin-top:7px;font-size:11px!important}.music-visual-media-actions{display:flex;gap:7px;margin-top:12px}.music-visual-media-actions button{font-size:10px;flex:1}
+.music-immersive .music-library-panel{width:var(--visual-library-width,320px);border-radius:var(--visual-library-radius,20px);background:color-mix(in srgb,var(--surface) calc(var(--visual-library-opacity,.88)*100%),transparent)}
+.music-immersive .music-library[data-visual-dynamic=false] .music-library-panel{transition:none}
+@media(max-width:980px){.music-immersive-player{width:calc(100% - 48px)}.music-immersive-lyrics{width:84%}.music-immersive .music-transport{gap:4px}.music-immersive-header{top:18px;right:18px}.music-visual-panel{width:360px}}
+@media(prefers-reduced-motion:reduce){.music-immersive-line{transition:none;transform:none!important;filter:none!important}.music-immersive .music-disc{animation:none!important}}
+
+.music-immersive[data-account-open=true] .music-immersive-lyrics,.music-immersive[data-account-open=true] .music-visual-trigger{pointer-events:none}
+
+/* Presentation text is not selectable. Input editing remains available in the
+   search, visual console and account forms. This also prevents iframe-wide
+   selection paint from inheriting the theme's selection highlight. */
+:is(.music-view,.music-immersive,.music-account-root,.music-library,.music-feedback),
+:is(.music-view,.music-immersive,.music-account-root,.music-library,.music-feedback) *{user-select:none!important;-webkit-user-select:none!important}
+:is(.music-view,.music-immersive,.music-account-root,.music-library) :is(input,textarea,[contenteditable="true"]){user-select:text!important;-webkit-user-select:text!important}
+
+.music-visual-panel>header>.music-visual-save{width:auto;min-width:48px;height:30px;padding:5px 11px;font-size:12px;line-height:18px;flex:none}
+.music-visual-save-status{font-size:10px;color:var(--muted);align-self:center;white-space:nowrap}
+
+.music-visual-presets i[data-preset-art]{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.85}
+.music-visual-presets button{height:112px;justify-content:flex-end}
+.music-visual-presets button::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 40%,#000b)}
+.music-visual-panel>header>button[data-visual-action=close]{order:5}
+

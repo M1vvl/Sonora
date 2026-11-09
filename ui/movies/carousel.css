@@ -1,0 +1,29 @@
+/* One append-only horizontal film deck. No WebGL context or running idle loop. */
+.movies-view .anime-featured{grid-template-rows:310px minmax(250px,1fr)}
+.movie-carousel-mount{display:flex;min-width:0;min-height:0;overflow:hidden}
+.movie-carousel{display:flex;flex:1;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.movie-carousel-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 4px 12px;color:var(--text);font-size:14px;font-weight:650}
+.movie-carousel-heading small{font-size:10px;font-weight:400;color:var(--muted);white-space:nowrap}
+.movie-carousel-viewport{display:flex;align-items:stretch;flex:1;min-width:0;min-height:230px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-x;cursor:grab;user-select:none;-webkit-user-select:none;border-radius:22px}
+.movie-carousel-viewport::-webkit-scrollbar{display:none}
+.movie-carousel-viewport.is-dragging{cursor:grabbing}
+.movie-carousel-track{display:flex;align-items:stretch;gap:14px;padding:1px 2px 4px;min-width:max-content}
+.movie-metal-card{position:relative;display:block;isolation:isolate;flex:0 0 auto;width:clamp(160px,14vw,205px);min-height:230px;overflow:hidden;padding:0;border:1px solid color-mix(in srgb,var(--border-strong) 65%,#fff 35%)!important;border-radius:21px;background:var(--surface-raised);color:#fff;text-align:left;box-shadow:inset 1px 1px 0 #ffffff60,inset -1px -1px 0 #0005;contain:layout paint;cursor:inherit}
+.movie-metal-card>.anime-poster{position:absolute;inset:0;border-radius:inherit;z-index:-3}
+.movie-metal-card>.anime-poster img{width:100%;height:100%;object-fit:cover}
+.movie-metal-card::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;border:1px solid #ffffff3b;background:linear-gradient(127deg,#ffffff24 0%,transparent 24%,transparent 69%,#ffffff17 100%);box-shadow:inset 2px 2px 1px #ffffff16,inset -2px -2px 1px #00000026}
+.movie-metal-card .anime-feature-copy{left:13px;right:13px;bottom:15px;gap:7px}
+.movie-metal-card .anime-feature-copy>strong{font-size:15px;line-height:1.4}
+.movie-metal-card .anime-score{font-size:12px}
+.movie-metal-card .anime-card-shade{background:linear-gradient(transparent 18%,#0002 40%,#000d 100%)}
+.movie-metal-card .movie-metal-description{font-size:10px;color:#ecedf2;opacity:.9}
+.movie-carousel-status{flex:none;min-height:16px;font-size:10px;color:var(--muted);text-align:center;margin-top:4px!important}
+.movie-carousel-status[data-retry=true]{cursor:pointer;color:var(--accent-text)}
+.movie-metal-card:focus-visible{outline:2px solid var(--accent-text);outline-offset:-4px}
+@media(max-width:1150px){.movie-metal-card{width:165px}.movie-carousel-heading small{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.movie-carousel-viewport{scroll-behavior:auto}}
+
+/* Cards are the drag surface, not press-scaled controls or native image drags. */
+.movies-view .movie-metal-card:active:not(:disabled){transform:none}
+.movie-carousel-viewport img{-webkit-user-drag:none;user-select:none}
+.movie-carousel-viewport{scroll-behavior:auto}

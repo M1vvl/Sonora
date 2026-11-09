@@ -1,0 +1,7 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),{JSDOM}=require('jsdom'),{create}=require('../ui/music/interaction-policy.js');
+test('music display text cannot select/copy or select entire iframe, while forms remain editable',()=>{
+ const dom=new JSDOM('<body><section class="music-view"><span>Track</span><input value="Search"></section><section class="music-immersive"><span>Lyric</span><iframe></iframe></section><div id="monitor">Monitor</div></body>'),v=dom.window,d=v.document,root=d.querySelector('.music-view');let active=true;
+ const policy=create({root,isActive:()=>active}),event=(type,node,opts={})=>{const e=type==='keydown'?new v.KeyboardEvent(type,{bubbles:true,cancelable:true,...opts}):new v.Event(type,{bubbles:true,cancelable:true});node.dispatchEvent(e);return e.defaultPrevented;};
+ try{assert(root.hasAttribute('data-no-window-drag'));assert(event('selectstart',root.querySelector('span')));assert(event('selectstart',d.querySelector('iframe')));assert(!event('selectstart',d.querySelector('#monitor')));assert(!event('keydown',root.querySelector('input'),{key:'a',ctrlKey:true}));assert(event('keydown',d.body,{key:'a',ctrlKey:true}));assert(event('copy',d.querySelector('.music-immersive span')));assert(!event('copy',root.querySelector('input')));active=false;assert(!event('keydown',d.body,{key:'c',ctrlKey:true}));policy.dispose();assert(!event('selectstart',root.querySelector('span')));}finally{policy.dispose();v.close();}
+});

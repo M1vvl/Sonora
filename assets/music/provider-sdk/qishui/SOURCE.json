@@ -1,0 +1,69 @@
+{
+  "origin": "user-provided Mineradio-paused-main/qishui-auth-v6",
+  "adapter": "Passport SDK resources with sandboxed host binding; only requests owned-session APIs",
+  "files": [
+    {
+      "name": "security_seed.html",
+      "upstreamSHA256": "d68405171ca78fa6e244c9dac0a8b7f4cc3f9991f7a48cdc679d0440610387e3",
+      "sha256": "d68405171ca78fa6e244c9dac0a8b7f4cc3f9991f7a48cdc679d0440610387e3",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "security_host.html",
+      "upstreamSHA256": "88ba482f6e65f62f2c44154db5d73fba97e8ef792a1eaaa410820a48ae4ef025",
+      "sha256": "4a05c919d603ca8e0f63fc86b659540d754d45ded432464c9a92b6ddb7c3ec50",
+      "adaptation": "Owned-session credentialed XHR and official HTTPS verification-component allowlist"
+    },
+    {
+      "name": "react.js",
+      "upstreamSHA256": "229bbf4d0e7488209564152c6723497f1ac3934136ca1684233d2fa88fa4146f",
+      "sha256": "229bbf4d0e7488209564152c6723497f1ac3934136ca1684233d2fa88fa4146f",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "react-dom.js",
+      "upstreamSHA256": "9db33292007ab6c38527b39d5663e976a305564e19b2a5a8713ea2b2c00f505d",
+      "sha256": "9db33292007ab6c38527b39d5663e976a305564e19b2a5a8713ea2b2c00f505d",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "sdk-glue.js",
+      "upstreamSHA256": "42f03c3d8f25c3b4f8c499b456999377b1a9d7c5238a0a95d252d6a64ae91b13",
+      "sha256": "42f03c3d8f25c3b4f8c499b456999377b1a9d7c5238a0a95d252d6a64ae91b13",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "bdms.js",
+      "upstreamSHA256": "dd918a8d2028d68b47407e205eae01d9d674daa51013bc6c5efc0573e4b0a8e0",
+      "sha256": "dd918a8d2028d68b47407e205eae01d9d674daa51013bc6c5efc0573e4b0a8e0",
+      "adaptation": "unchanged"
+    }
+  ],
+  "apiClosure": {
+    "upstreamSHA256": "b0c40e06824942fec3aff7b200d2a7e0a2f81058659387e05c599d4512caa879",
+    "retainedDeclarations": 151,
+    "totalDeclarations": 208,
+    "exports": [
+      "handleQishuiStatus",
+      "handleQishuiUserPlaylists",
+      "handleQishuiPlaylistTracks",
+      "handleQishuiPcSearch",
+      "handleQishuiLyric",
+      "handleQishuiSongUrl",
+      "clearQishuiRuntimeCaches"
+    ],
+    "adaptation": "Authenticated PC closure only; injected bounded metadata transport; no OAuth token files; web-session feed only; cursor residency capped at 1050 rows. Real per-account eligible quality options and explicit stream selection.",
+    "sha256": "ef082ec10366cd82b07b3ae0ab2248c22969149ea1ac3eddc5e3df5d583f318c"
+  },
+  "keyDecoder": {
+    "origin": "qishui-audio-decryptor/decrypt-utils.js",
+    "upstreamSHA256": "6050ebdc93aa9c07f95346d510b0f0544c2eeab2b9c788a9e116474bfb3e7411",
+    "adaptation": "Extract inline API key conversion only; no complete-song decoder/cache",
+    "sha256": "a22802111648cc74e2ccb1c1c3c358b78890e90dd7d9800386841f0749c1f3f7"
+  },
+  "streamAdapter": {
+    "path": "src/music/qishui-stream.cjs",
+    "implementation": "Bounded authorized inline-key AES-CTR single-AAC MP4 sample stream; no whole-song cache, FLAC/subsample/fragment/pssh support",
+    "layoutReference": "https://github.com/shaka-project/shaka-packager/blob/main/packager/media/formats/mp4/box_definitions.cc"
+  }
+}

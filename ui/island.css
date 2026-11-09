@@ -1,0 +1,205 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  font-size: 12px;
+  font-optical-sizing: auto;
+  --lime: #d1fa6b;
+  --glass-opacity: .55;
+  --ease: cubic-bezier(.23, 1, .32, 1);
+}
+* { box-sizing: border-box; }
+html, body {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+body { padding: 0; border: 0; color: #f6f9ff; user-select: none; text-shadow: 0 1px 2px rgba(19, 29, 48, .78); }
+button { font: inherit; color: inherit; border: 0; cursor: pointer; -webkit-app-region: no-drag; }
+button:focus-visible { outline: 2px solid var(--lime); outline-offset: -3px; }
+button:active { opacity: .74; }
+button:disabled { cursor: wait; opacity: .5; }
+[hidden] { display: none !important; }
+/* Real per-pixel transparency. These CSS reflections add no desktop blur:
+   a renderer backdrop-filter cannot sample windows behind Electron. */
+.island {
+  width: 100%;
+  height: 100%;
+  border-radius: 23px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(126deg, rgba(250, 253, 255, .22), rgba(217, 234, 255, .065) 36%, rgba(176, 206, 249, .018) 61%, rgba(213, 236, 255, .09)),
+    rgba(119, 157, 211, clamp(.025,calc(.0735 + (var(--glass-opacity) - .55) * .8),.8));
+  /* One continuous contour; the broad reflections below supply the volume. */
+  border: 1px solid rgba(247, 252, 255, .36);
+  box-shadow: 0 0 .5px rgba(0,0,0,.2), 0 6px 24px rgba(0,0,0,.08), inset 1.5px 1.5px 1px -1px rgba(255,255,255,.95), inset -1.5px -1.5px 1px -1px rgba(255,255,255,.55);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.island::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 58% 85% at 14% -29%, rgba(255, 255, 255, .24), transparent 82%),
+    radial-gradient(ellipse 48% 45% at 81% 115%, rgba(200, 231, 255, .12), transparent 88%),
+    linear-gradient(180deg, rgba(255, 255, 255, .035), transparent 43%, rgba(16, 32, 53, .05));
+}
+.island::after { content: none; }
+.island.expanded {
+  width: 100%;
+  height: 100%;
+  border-radius: 26px;
+  background:
+    linear-gradient(139deg, rgba(243, 250, 255, .21), rgba(194, 218, 251, .06) 40%, rgba(171, 204, 250, .045) 72%, rgba(220, 240, 255, .12)),
+    rgba(96, 134, 188, clamp(.025,calc(.125 + (var(--glass-opacity) - .55) * .8),.8));
+}
+/* Exterior luminance supplies the ink/tint without changing the saved theme.
+   Keep a contrasting contour on both white pages and dark wallpaper. */
+html[data-glass-ink="dark"] body { color:rgba(8,14,22,.9); text-shadow:0 1px 1px #ffffff80; }
+html[data-glass-ink="dark"] .island {
+  background:radial-gradient(ellipse at 0 0,rgba(255,255,255,.3),transparent 55%),rgba(255,255,255,clamp(.025,calc(var(--ambient-tint,.12) + (var(--glass-opacity) - .55) * .8),.8));
+  border-color:rgba(22,38,61,.32);
+}
+html[data-glass-ink="dark"] :is(.island-label,#island-agent,#island-status-label,.island-title,.island-token-grid small,.island-token-grid strong,#island-session-select) { color:rgba(8,14,22,.9); text-shadow:0 1px 1px #ffffff80; }
+html[data-glass-ink="dark"] :is(.compact-metrics,.island-token-grid>div:last-child) { background:rgba(20,34,42,.72); border-radius:12px; }
+html[data-glass-ink="dark"] .island-token-grid>div:last-child strong { color:#e0ff8e; text-shadow:0 1px 2px #172015; }
+html[data-glass-ink="dark"] .island-token-grid>div:last-child small { color:#e9f4f8; text-shadow:none; }
+html[data-glass-ink="dark"] :is(.detail-topline,#island-session-select) { border-color:rgba(18,36,57,.24); }
+html[data-glass-ink="dark"] .drag-handle span { background:#314522; }
+html[data-glass-ink="dark"] #island-title.header-status { color:rgba(8,14,22,.9); }
+html[data-glass-ink="dark"] .activity-entry { color:rgba(8,14,22,.9); text-shadow:0 1px 1px #ffffff80; }
+html[data-glass-ink="light"] .island { background:radial-gradient(ellipse at 0 0,rgba(255,255,255,.18),transparent 55%),rgba(12,22,36,clamp(.025,calc(.14 + var(--ambient-tint,.08) + (var(--glass-opacity) - .55) * .8),.8));border-color:rgba(247,252,255,.55); }
+.island:not(.expanded) { cursor: pointer; }
+.island-header { --header-height: 42px; --metrics-height: 36px; --metrics-end-adjust: 3px; position: relative; height: var(--header-height); display: flex; align-items: center; padding: 0 calc((var(--header-height) - var(--metrics-height)) / 2 + var(--metrics-end-adjust)) 0 12px; cursor: pointer; }
+/* The three meters retain their real rounded geometry. Scaling a rounded 18px
+   box down by fractional amounts produces thin, asymmetric cap fragments. */
+.drag-handle { position: relative; width: 20px; height: 30px; contain: layout paint; flex: none; cursor: grab; }
+.drag-handle span { position: absolute; top: 0; left: 0; width: 2px; height: 4px; border-radius: 2px; background: #d8edb9; display: block; transform: translateY(13px); }
+.drag-handle span:nth-child(2) { left: 5px; }
+.drag-handle span:nth-child(3) { left: 10px; }
+.drag-handle.music-active span { background: #e0ff9b; }
+.island-toggle { display: flex; align-items: center; gap: 9px; padding: 0; background: transparent; height: 100%; min-width: 0; flex: 1; text-align: left; border-radius: 18px; }
+.agent-orb { height: 28px; width: 27px; flex: none; display: grid; place-items: center; background: transparent; border: 0; box-shadow: none; color: #f0cbb7; }
+.agent-orb svg { width: 27px; height: 24px; }
+.agent-cloud { filter: drop-shadow(0 1px 2px rgba(12, 13, 20, .32)); }
+.agent-asterisk { filter: drop-shadow(0 1px 2px rgba(16, 12, 10, .22)); }
+.island-copy { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; width: calc(100% - 252px); min-width: 0; pointer-events: none; text-align: center; }
+.island-label { display: flex; align-items: center; justify-content: center; gap: 5px; max-width: 100%; color: #e8f2ff; font-size: 10px; line-height: 1.1; letter-spacing: .015em; white-space: nowrap; }
+#island-agent { font-size: 10px; color: #f7fbff; font-weight: 650; }
+.status-dot { width: 3px; height: 3px; border-radius: 50%; background: #adb9a7; flex: none; }
+.status-dot.working { background: var(--lime); box-shadow: 0 0 5px rgba(209, 250, 107, .4); }
+.status-dot.waiting { background: #f1cf8a; }
+.status-dot.completed { background: #b2dac0; }
+#island-status-label { color: #dbeeff; font-size: 10px; }
+.island-title { display: block; width: 100%; color: #f4f9ff; font-size: 13px; font-weight: 650; line-height: 1.2; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.compact-metrics { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 0; padding: 1px 8px; height: var(--metrics-height); min-height: var(--metrics-height); min-width: 88px; margin-left: auto; flex: none; background: linear-gradient(140deg, rgba(241, 250, 255, .1), rgba(147, 185, 231, .055)), rgba(45, 65, 97, .1); border: 1px solid rgba(241, 250, 255, .2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16); border-radius: 14px; }
+.compact-metrics strong { color: #e0ff9b; font-size: 16px; font-weight: 700; line-height: 1.05; letter-spacing: -.025em; font-variant-numeric: tabular-nums; text-shadow: 0 1px 2px rgba(22, 35, 21, .85); }
+.compact-metrics small { color: #d4f58c; font-size: 13px; font-weight: 650; line-height: 1.05; letter-spacing: -.015em; font-variant-numeric: tabular-nums; }
+.island-details { padding: 0 21px 16px; opacity: 1; animation: reveal 180ms var(--ease); }
+.detail-topline { display: flex; align-items: center; border-top: 1px solid rgba(237, 247, 255, .2); height: 42px; padding-top: 6px; gap: 0; }
+.island-token-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; padding: 10px 0 15px; }
+.island-token-grid > div { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; text-align: center; }
+.island-token-grid small { color: #e1efff; font-size: 11px; font-weight: 550; line-height: 1.2; }
+.island-token-grid strong { color: #f6fbff; font-size: 22px; font-weight: 650; line-height: 1.2; letter-spacing: -.03em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.island-token-grid > div:last-child strong { color: #e0ff8e; font-size: 22px; font-weight: 750; }
+@keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-transparency: reduce) {
+ html[data-material="blur"] .island { background: rgba(49, 64, 86, .94); }
+}
+@media (prefers-contrast: more) {
+ .island { background: rgba(22, 34, 52, .96); border-color: #edf7ff; }
+ .island-title { color: #ffffff; }
+}
+@media (prefers-reduced-motion: reduce) {
+ *, *::before, *::after { animation: none !important; transition-property: opacity, color, background-color !important; }
+}
+
+/* Native select semantics remain intact; supported Chromium versions render
+   its picker in the page top layer, at exactly the trigger's anchored width. */
+.island-session-stack { display: flex; align-items: center; flex: 1; width: 100%; min-width: 0; }
+#island-session-select { display: block; width: 100%; inline-size: 100%; min-width: 0; min-inline-size: 0; max-width: 100%; max-inline-size: 100%; height: 28px; margin: 0; padding: 2px 25px 2px 8px; overflow: hidden; border: 1px solid rgba(233, 246, 255, .25); border-radius: 8px; color: #f5faff; background: rgba(44, 66, 96, .12); font: 13px/1.4 "Segoe UI Variable", "Segoe UI", "Microsoft YaHei UI", sans-serif; text-shadow: 0 1px 2px rgba(19, 29, 48, .75); white-space: nowrap; text-overflow: ellipsis; cursor: pointer; -webkit-app-region: no-drag; }
+#island-session-select option { color: #eef3f7; background: #29323e; text-shadow: none; }
+#island-session-select:focus-visible { outline: 2px solid var(--lime); outline-offset: 1px; }
+@supports (appearance: base-select) and (width: anchor-size(width)) {
+  #island-session-select,
+  #island-session-select::picker(select) { appearance: base-select; }
+  #island-session-select { display: flex; align-items: center; gap: 8px; padding-inline: 9px; anchor-name: --pulse-session-selector; }
+  #island-session-select .session-select-button { display: flex; align-items: center; flex: 1; min-width: 0; max-width: 100%; height: 100%; padding: 0; background: transparent; color: inherit; text-shadow: inherit; text-align: left; }
+  #island-session-select selectedcontent { display: block; flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  #island-session-select::picker-icon { margin-inline-start: auto; color: #dcefff; flex: none; }
+  #island-session-select::picker(select) {
+    box-sizing: border-box;
+    position: fixed;
+    position-anchor: --pulse-session-selector;
+    position-area: none;
+    inset: auto;
+    top: 82px;
+    top: calc(anchor(--pulse-session-selector bottom, 78px) + 4px);
+    left: 22px;
+    left: anchor(--pulse-session-selector left, 22px);
+    width: calc(100vw - 44px);
+    width: anchor-size(--pulse-session-selector width, calc(100vw - 44px));
+    inline-size: calc(100vw - 44px);
+    inline-size: anchor-size(--pulse-session-selector width, calc(100vw - 44px));
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: calc(100vw - 44px);
+    max-width: min(anchor-size(--pulse-session-selector width, calc(100vw - 44px)), calc(100vw - 44px));
+    max-inline-size: calc(100vw - 44px);
+    max-inline-size: min(anchor-size(--pulse-session-selector width, calc(100vw - 44px)), calc(100vw - 44px));
+    max-height: min(150px, calc(100dvh - 96px));
+    max-block-size: min(150px, calc(100dvh - 96px));
+    position-try-fallbacks: flip-block;
+    margin: 0;
+    padding: 4px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid rgba(226, 245, 255, .48);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(246, 252, 255, .14), rgba(184, 217, 249, .045)), rgba(25, 43, 64, .48);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -1px 0 rgba(187, 222, 250, .12);
+    backdrop-filter: blur(14px) saturate(1.12);
+    -webkit-backdrop-filter: blur(14px) saturate(1.12);
+    color: #f4f9ff;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(225, 243, 255, .52) transparent;
+  }
+  #island-session-select option {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    inline-size: 100%;
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    max-inline-size: 100%;
+    padding: 6px 27px 6px 9px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: #edf7ff;
+    background: transparent;
+    font: inherit;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(7, 18, 33, .75);
+  }
+  #island-session-select option:checked { border-color: rgba(231, 248, 255, .24); background: rgba(221, 241, 255, .14); }
+  #island-session-select option:hover,
+  #island-session-select option:focus-visible { outline: none; background: rgba(219, 240, 255, .18); }
+  #island-session-select option::checkmark { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #eefaff; }
+  #island-session-select::picker(select)::-webkit-scrollbar { width: 5px; }
+  #island-session-select::picker(select)::-webkit-scrollbar-track { background: transparent; }
+  #island-session-select::picker(select)::-webkit-scrollbar-thumb { border-radius: 99px; background: rgba(225, 243, 255, .44); }
+}

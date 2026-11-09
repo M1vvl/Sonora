@@ -1,0 +1,11 @@
+/* Movies reuse the anime workspace geometry and the current complete palette. */
+.movies-view .movie-source-latency{font-size:10px;font-weight:500;color:var(--muted);white-space:nowrap}
+.movies-view .movie-playback-preferences{margin-top:24px}
+.movies-view .movie-source-field{display:flex;flex-direction:column;gap:7px;margin-top:14px;font-size:12px;color:var(--muted)}
+.movies-view .movie-source-field input{width:100%;min-width:0;border:1px solid var(--border-strong);border-radius:11px;background:var(--input-bg);color:var(--text);padding:11px 12px;font:inherit}
+.movies-view .movie-source-field input:focus-visible{outline:2px solid var(--accent-text);outline-offset:3px}
+.movies-view .movie-source-dialog .anime-dialog-actions{flex-wrap:wrap}
+
+.movies-view .movie-quality-badge{display:block;font-size:10px;line-height:1.5;color:var(--muted);max-width:240px;overflow-wrap:anywhere;white-space:normal}
+.movies-view .anime-source-chip.active .movie-quality-badge{color:inherit;opacity:.88}
+.movies-view .movie-quality-trigger{margin-bottom:14px}

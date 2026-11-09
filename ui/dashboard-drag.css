@@ -1,0 +1,9 @@
+/* Gesture policy is local to the dashboard main surface; controls keep native input. */
+main.dashboard-drag-enabled { user-select: none; -webkit-user-select: none; }
+main.dashboard-drag-enabled :is(button,a,input,select,textarea,summary,label,[contenteditable]:not([contenteditable="false"]),[role="button"],[role="link"],[role="textbox"],[role="combobox"],[data-no-window-drag]) { user-select: auto; -webkit-user-select: auto; }
+main.dashboard-drag-enabled [data-pulse-drag-text-armed="true"] { user-select: text; -webkit-user-select: text; cursor: text; }
+main.dashboard-drag-enabled.dashboard-text-selecting,
+main.dashboard-drag-enabled.dashboard-selection-readable { user-select: text; -webkit-user-select: text; }
+main.dashboard-drag-enabled.dashboard-text-selecting { cursor: text; }
+main.dashboard-drag-enabled.dashboard-window-dragging,
+main.dashboard-drag-enabled.dashboard-window-dragging * { user-select: none !important; -webkit-user-select: none !important; cursor: grabbing !important; }

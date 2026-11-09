@@ -1,0 +1,10 @@
+.drag-handle{-webkit-app-region:no-drag;touch-action:none;cursor:grab}
+.drag-handle.dragging{cursor:grabbing;animation:none}
+.island-header{touch-action:none}
+.island-header.dragging,.island-header.dragging .island-toggle{cursor:grabbing}
+.island.dragging,.island.dragging .island-toggle{cursor:grabbing}
+.island-mode-feedback{position:absolute;z-index:8;inset:9px 94px auto 75px;margin:0;padding:2px 8px;font-size:11px;line-height:20px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;color:inherit;border-radius:12px;background:color-mix(in srgb,currentColor 8%,transparent);backdrop-filter:blur(8px);animation:island-mode-enter 180ms ease-out}
+.island[data-pull-ready="true"] .drag-handle{opacity:1;transform:translateY(3px)}
+.drag-handle{transition:transform 150ms ease,opacity 150ms ease}
+@keyframes island-mode-enter{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.island-mode-feedback{animation:none}.drag-handle{transition:none}}

@@ -1,0 +1,95 @@
+{
+  "source": "MineRadio GPL-3.0 Emily lyric subset with explicit per-file adaptation",
+  "order": [
+    "02-lyrics-state-layout.js",
+    "03-lyrics-star-river.js",
+    "05-lyrics-fonts-texture.js",
+    "07-lyrics-palette-text-utils.js",
+    "08-lyrics-display-modes.js",
+    "09-lyrics-payloads.js",
+    "10-lyrics-mask-textures.js",
+    "11-lyrics-shaders.js",
+    "12-lyrics-row-layers.js",
+    "13-lyrics-mesh-build.js",
+    "14-stage-lyrics-rendering.js"
+  ],
+  "files": [
+    {
+      "name": "02-lyrics-state-layout.js",
+      "sha256": "13b198fad1705a52d202da3241a34e24fca8e574aa7fa917cb32efbb9937d049",
+      "bytes": 4470,
+      "upstreamSHA256": "147a08adf65b92e103711da44fcfbebbf0876c363b34a11b54ba5edbd969f09d",
+      "adaptation": "Other-preset branches and removed-engine callbacks pruned; Emily lyric behavior retained"
+    },
+    {
+      "name": "03-lyrics-star-river.js",
+      "sha256": "90d019ff725def82962c1e098af162b10762b2ab5a64bc27e3188cf9894e9183",
+      "bytes": 9768,
+      "upstreamSHA256": "54bf0c0a97c96e149da51681144eac73b0da8334573a010e962bebe165200544",
+      "adaptation": "Other-preset branches and removed-engine callbacks pruned; Emily lyric behavior retained"
+    },
+    {
+      "name": "05-lyrics-fonts-texture.js",
+      "sha256": "3c06223f960ca72af40df304225e703454358157139449f3f039381b1e920e5b",
+      "bytes": 13463,
+      "upstreamSHA256": "3c06223f960ca72af40df304225e703454358157139449f3f039381b1e920e5b",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "07-lyrics-palette-text-utils.js",
+      "sha256": "02d3edb8ae47f183844511bcb631899ebc670e8acca7a20d74748ee6d1b1611c",
+      "bytes": 27300,
+      "upstreamSHA256": "51a4db8492da0b298be967e0e001a7a97635c8781c969e17a1623eca93ec4a3d",
+      "adaptation": "Remove deleted-scene callbacks; request shared-host redraw after palette updates"
+    },
+    {
+      "name": "08-lyrics-display-modes.js",
+      "sha256": "847ab0bc873cfc37c6b262b7a8871308635c08164a03d01022c9b2f4a66f3b81",
+      "bytes": 9118,
+      "upstreamSHA256": "847ab0bc873cfc37c6b262b7a8871308635c08164a03d01022c9b2f4a66f3b81",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "09-lyrics-payloads.js",
+      "sha256": "cd3d4311ec209640766d16936272007a203bdce32cac6829208e198c2065b761",
+      "bytes": 8703,
+      "upstreamSHA256": "cd3d4311ec209640766d16936272007a203bdce32cac6829208e198c2065b761",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "10-lyrics-mask-textures.js",
+      "sha256": "2e834e6f09651f0d498f5d3502191871b6bb1cdb742cbd0f3b46f2e1549644b0",
+      "bytes": 42012,
+      "upstreamSHA256": "2e834e6f09651f0d498f5d3502191871b6bb1cdb742cbd0f3b46f2e1549644b0",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "11-lyrics-shaders.js",
+      "sha256": "c1922ceffdf739a2f4d7202ffb2a735b14934b55cc2b8714999cffdd782276a5",
+      "bytes": 7869,
+      "upstreamSHA256": "c1922ceffdf739a2f4d7202ffb2a735b14934b55cc2b8714999cffdd782276a5",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "12-lyrics-row-layers.js",
+      "sha256": "c440a842264b47483463d8cca1c2bdb03acfbbc65e2615000870a9aea99b0fb9",
+      "bytes": 89472,
+      "upstreamSHA256": "c440a842264b47483463d8cca1c2bdb03acfbbc65e2615000870a9aea99b0fb9",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "13-lyrics-mesh-build.js",
+      "sha256": "c9cbcec83ccf78ced3bdd66594380f61c113560fdeb953a2c50d4cff01d5b10e",
+      "bytes": 25153,
+      "upstreamSHA256": "c9cbcec83ccf78ced3bdd66594380f61c113560fdeb953a2c50d4cff01d5b10e",
+      "adaptation": "unchanged"
+    },
+    {
+      "name": "14-stage-lyrics-rendering.js",
+      "sha256": "f1d9fc6d827818ccfbbb2e718eac756a8b65a7b9040798075edadaba88b1a09e",
+      "bytes": 152553,
+      "upstreamSHA256": "eb1f2ea10fda8e557aad9aad53173685522eadc4b90028ec51116e4812f28a61",
+      "adaptation": "Other-preset branches and removed-engine callbacks pruned; Emily lyric behavior retained"
+    }
+  ]
+}

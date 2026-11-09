@@ -1,0 +1,16 @@
+{
+  "currency": "USD",
+  "unit": "per_1M_tokens",
+  "verifiedAt": "2026-10-28",
+  "source": "https://developers.openai.com/api/docs/pricing",
+  "note": "仅按 API Standard 短上下文文本 token 单价估算，不是 Plus 账单或订阅额度换算。本地日志未必提供服务档位，未计 Fast、Ultrafast、长上下文和地区加价。未知模型不套用其他模型价格；工具、图片和语音等额外费用未计入。",
+  "models": {
+    "gpt-6-astra": { "input": 10, "cached": 1, "output": 50 },
+    "gpt-6.1-sol": { "input": 2, "cached": 0.1, "output": 10 },
+    "gpt-6-sol": { "input": 2, "cached": 0.2, "cacheWrite": 2.5, "output": 10, "source": "https://developers.openai.com/api/docs/models/gpt-6-sol" },
+    "gpt-5.6-sol": { "input": 4, "cached": 0.4, "cacheWrite": 5, "output": 20, "source": "https://developers.openai.com/api/docs/models/gpt-5.6-sol" },
+    "gpt-6.1-terra": { "input": 1, "cached": 0.05, "output": 5 },
+    "gpt-6-luna": { "input": 0.1, "cached": 0.01, "output": 0.5 },
+    "gpt-5.3-codex": { "input": 1.75, "cached": 0.175, "output": 14 }
+  }
+}
