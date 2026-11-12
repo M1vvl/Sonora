@@ -4,14 +4,14 @@
   "unchanged": {
     "GlassOptions.cs": "2701cffa067239ffe768287c6fc28fa7dd178f643ca60c11c2b406eecdbda4c5",
     "GlassRenderer.cs": "fec8a82814f051db3a6687254d4f27899a36129c923a46d8c424a7fe38d03853",
-    "LiquidGlass.hlsl": "ac6a93541c068a2903b1eda0a239d8236eb337fd7a57eece4ab43678ac05a5e2",
+    "LiquidGlass.hlsl": "8feb2695c4723af79220a208f5b12b11d466cdbabae318f119028217a50c7d7a",
     "MaterialContrast.cs": "8e0357a5c0d1c331a9833cef1189422f78e53c116710f97ab7e96de9f9e8b6eb",
     "NativeWindowComposition.cs": "1a3c3de5b03bc06f0a03e4d47f71b3e339797dfcc79cad18454507b45f22a702",
     "SessionSurfaceState.cs": "80295573514b75fdc49b56d7132ff6a646b10817eec4d5bc2afb132d286c40bd",
     "SharedDesktopCapture.cs": "8657f3f76293f3decc204a175d9291073406a627c29dd86bed2b5fb99c726113",
     "WindowCaptureSource.cs": "7d728264ffb3fec969e75da8f6613aebf6e29390691b9ae9298fbcf3e09c7cc1",
-    "Shaders/LiquidGlass.ps.cso": "7d3ab1bcebefbf1089de9554624f611a63b7548a56c3aa602c6e42443dca8269",
-    "Shaders/LiquidGlass.sha256": "fb0ab25631d4516e438eb8325674889a8b7ee10d09590e55f771050ca79b1627",
+    "Shaders/LiquidGlass.ps.cso": "6cee5947e8258c9979fd44a4dccdb512febdd9ff6b0f8726002566a7b564e555",
+    "Shaders/LiquidGlass.sha256": "6c113bd7082f152a6094ee3ae9bb2edc601fb5da062491fd3aecbf3f601c595a",
     "Shaders/LiquidGlass.vs.cso": "a174a158a51b830af3819634e9639ecfa2610cf79305b48d96c097b3d6e00ee2",
     "Shaders/WindowScene.ps.cso": "ff43e29ac672ea450447db8296b64e3141b104506e43262677543569a2b6fc15",
     "Shaders/WindowScene.sha256": "fa78d4cce2249707ff85bc1d6abc310fa428bb69c197daf406da872eb863fc2d",
@@ -19,5 +19,6 @@
   },
   "adapted": {
     "WindowBackgroundScene.cs": "Add ExternalOwnerProcessId to local O1 exclusion; original algorithm unchanged"
-  }
+  },
+  "snapshot": "2026-11-12 19:48:24 +08:00; includes Veyra finite-support shadow correction"
 }

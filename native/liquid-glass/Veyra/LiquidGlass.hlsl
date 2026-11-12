@@ -133,6 +133,16 @@ float lightingSupport(float bevelT, float curvature, float bevel)
     return outerBevelSupport * curvatureWeight;
 }
 
+// O6 shadow follows the glass SDF, with finite support inside the texture gutter.
+// An unbounded exponential leaves nonzero alpha at the rectangular RT edge.
+float externalShadow(float sdf)
+{
+    float distancePixels = max(sdf, 0) * outputSize.y;
+    float supportPixels = max(surfaceInset * outputSize.y - 1.0, 0.5);
+    float tail = 1 - smoothstep(supportPixels * 0.5, supportPixels, distancePixels);
+    return exp(-distancePixels / 4.0) * 0.16 * tail;
+}
+
 float4 GlassPS(VertexOutput input) : SV_Target
 {
     // O1: paintComposeRT already contains the REAL desktop with this app excluded.
@@ -146,7 +156,7 @@ float4 GlassPS(VertexOutput input) : SV_Target
     // O2 evaluates only the silhouette. Shadow coverage is composed in O6.
     if (mask <= 0.0001)
     {
-        float outsideShadow = exp(-max(sdf, 0) * outputSize.y / 4.0) * 0.16;
+        float outsideShadow = externalShadow(sdf);
         return float4(0, 0, 0, outsideShadow);
     }
 
@@ -186,7 +196,7 @@ float4 GlassPS(VertexOutput input) : SV_Target
 
     // O6: REFRACT -> external SHADOW -> TINT -> LIGHT, in that order.
     float3 material = refracted;
-    float shadow = exp(-max(sdf, 0) * outputSize.y / 4.0) * 0.16;
+    float shadow = externalShadow(sdf);
     float composedAlpha = mask + shadow * (1-mask);
     material = lerp(material, float3(0.96,0.98,1.0), saturate(uTint));
     float3 view = float3(0,0,1);
