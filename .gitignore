@@ -16,3 +16,5 @@ Sonara-Accounts-*/
 .env.local
 *.pfx
 *.key
+native/liquid-glass/obj/
+native/liquid-glass/bin/

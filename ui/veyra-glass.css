@@ -1,0 +1,19 @@
+.veyra-glass-canvas { position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-2; }
+.veyra-glass-tint { display:none; }
+html[data-dashboard-glass="true"] .veyra-glass-canvas { opacity:var(--veyra-glass-opacity,.55)!important; }
+html[data-veyra-glass="true"][data-dashboard-glass="true"] .veyra-glass-tint { display:block;position:absolute;inset:0;z-index:-1;pointer-events:none;background:color-mix(in srgb,var(--bg) calc(var(--dashboard-shell-tint,55%) * .38),transparent); }
+/* Optical rim, dispersion, refraction and Fresnel are supplied by the migrated
+   shader; never stack the old synthetic rim or a second frosted backdrop. */
+html[data-veyra-glass="true"] .island,
+html[data-veyra-glass="true"] .island.expanded { background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none; }
+html[data-veyra-glass="true"] .island::before,
+html[data-veyra-glass="true"] .liquid-edge { display:none; }
+html[data-dashboard-glass="true"][data-veyra-glass="true"] .app-shell {
+  background:color-mix(in srgb,var(--bg) calc(var(--dashboard-shell-tint,55%) * .38),transparent);
+}
+html[data-dashboard-glass="true"][data-veyra-glass="true"] .app-shell::before,
+html[data-dashboard-glass="true"][data-veyra-glass="true"] .app-shell::after { content:none; }
+/* Header chrome has an explicit square layout box; glyph font metrics cannot
+   displace the visual center. This also covers both transparency dialogs. */
+#material-transparency-close { display:grid;place-items:center;width:32px;height:32px;padding:0;line-height:0; }
+#material-transparency-close svg { display:block;width:14px;height:14px; }

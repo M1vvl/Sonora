@@ -44,5 +44,7 @@ contextBridge.exposeInMainWorld('pulse', Object.freeze({
   onSettings: subscribe('pulse:settings-update'),
   onAudioFrame: subscribe('pulse:audio-frame'),
   onMediaUpdate: subscribe('pulse:media-update'),
+  onLiquidGlass: subscribe('pulse:liquid-glass'),
+  liquidGlassPresented: value=>ipcRenderer.send('pulse:liquid-glass-presented',value),
   onRefractionFrame: subscribe('pulse:refraction-frame')
 }));

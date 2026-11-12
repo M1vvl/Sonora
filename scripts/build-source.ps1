@@ -11,7 +11,7 @@ try {
   foreach ($folder in @('src','ui','config','assets','scripts','tests','docs','.github')) {
     $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot $folder) -Recurse -File | ForEach-Object { $_.FullName.Substring($projectRoot.Length + 1) }
   }
-  $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot 'native') -Recurse -File | Where-Object { $_.Extension -in @('.cs','.ps1','.glsl','.json','.manifest') -or $_.Name -in @('LICENSE','THIRD_PARTY_NOTICES.md') } | ForEach-Object { $_.FullName.Substring($projectRoot.Length + 1) }
+  $files += Get-ChildItem -LiteralPath (Join-Path $projectRoot 'native') -Recurse -File | Where-Object { $_.FullName -notmatch '\\(obj|bin)\\' -and ($_.Extension -in @('.cs','.csproj','.ps1','.hlsl','.cso','.sha256','.glsl','.json','.manifest') -or $_.Name -in @('LICENSE','THIRD_PARTY_NOTICES.md','NOTICE.md')) } | ForEach-Object { $_.FullName.Substring($projectRoot.Length + 1) }
   foreach ($relative in $files | Sort-Object -Unique) {
     $sourceRelative = $relative.Replace('\','/')
     if ($sourceRelative -match '^assets/music/(source-presets/assets/skull-decimation-points\.bin|presets/(planet|record|ripple|stars|tranquil|tunnel|void)\.png)$') { continue }

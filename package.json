@@ -1,6 +1,6 @@
 {
   "name": "sonara",
-  "version": "0.3.41",
+  "version": "0.3.42",
   "description": "Sonara local Agent monitor and online music workspace with a desktop island",
   "main": "src/main.cjs",
   "author": "Sonara",
@@ -13,12 +13,13 @@
     "pack": "electron-builder --win dir --x64",
     "dist": "electron-builder --win portable --x64",
     "build:audio": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/audio/build.ps1",
-    "predist": "npm run build:audio && npm run build:media && npm run build:player && npm run build:source",
-    "prepack": "npm run build:audio && npm run build:media && npm run build:player && npm run build:source",
+    "predist": "npm run build:audio && npm run build:media && npm run build:player && npm run build:glass && npm run build:source",
+    "prepack": "npm run build:audio && npm run build:media && npm run build:player && npm run build:glass && npm run build:source",
     "build:media": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/media/build.ps1",
     "release": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/release.ps1",
     "build:source": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/build-source.ps1",
-    "build:player": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/player/build.ps1"
+    "build:player": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/player/build.ps1",
+    "build:glass": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File native/liquid-glass/build.ps1"
   },
   "devDependencies": {
     "electron": "45.1.0",
@@ -82,6 +83,10 @@
       {
         "from": "native/player/resources",
         "to": "native/player"
+      },
+      {
+        "from": "native/liquid-glass/bin/Sonara.LiquidGlass.exe",
+        "to": "native/liquid-glass/Sonara.LiquidGlass.exe"
       }
     ]
   },

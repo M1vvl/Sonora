@@ -26,7 +26,7 @@ test('glass controls retain theme, place island settings beside its switch, and 
     assert.equal(document.documentElement.dataset.dashboardGlass,'false');
     control.setDiagnostics({fallbackReason:'system-transparency-disabled'});
     const toggle=document.getElementById('setting-dashboard-glass');toggle.checked=true;toggle.dispatchEvent(new dom.window.Event('change'));
-    assert.equal(document.documentElement.dataset.dashboardGlass,'true');assert.match(document.getElementById('dashboard-glass-status').textContent,/Windows/);
+    assert.equal(document.documentElement.dataset.dashboardGlass,'true');assert.match(document.getElementById('dashboard-glass-status').textContent,/Veyra Liquid Glass/);
     document.getElementById('dashboard-transparency-button').click();
     const range=document.getElementById('material-transparency');range.value='65';range.dispatchEvent(new dom.window.Event('input'));
     assert.equal(document.documentElement.style.getPropertyValue('--dashboard-tint'),'35%');assert.equal(document.documentElement.style.getPropertyValue('--dashboard-shell-tint'),'35%');range.dispatchEvent(new dom.window.Event('change'));

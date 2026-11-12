@@ -55,3 +55,6 @@ The distributable includes resources/corresponding-source.zip containing applica
 ## MineRadio original Sonic Topography (0.3.40)
 
 `sonic-topography-preset.js` and `sonic-audio-monitor.js` are copied unchanged from the supplied MineRadio source. Their SHA-256 values, original paths and byte counts are recorded under `sonicPorts` in `assets/music/source-presets/source-manifest.json`. The original star-river shader branch, plane geometry and common shaders are retained in the shared renderer. Sonara adapters connect its existing audio analyser, scene clock, bounded settings and lifecycle. The original module attributes its visual algorithm to yin-yizhen/sonic-topography 1.1.1, commit 3ff303e. The existing MineRadio GPL-3.0 notice and corresponding-source distribution apply.
+
+Veyra Liquid Glass: native optical renderer and capture pipeline migrated from the user's Veyra project. See native/liquid-glass/NOTICE.md and migration.json. Vortice, SharpGen and Windows/.NET runtime notices: assets/licenses/veyra.
+

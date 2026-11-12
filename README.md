@@ -1,6 +1,6 @@
 # Sonara
 
-[下载 Windows 单文件版](https://github.com/M1vvl/Sonora/releases/latest) · [直接下载 0.3.41 EXE](https://github.com/M1vvl/Sonora/releases/download/v0.3.41/Sonara-0.3.41-Windows.exe)
+[下载 Windows 单文件版](https://github.com/M1vvl/Sonora/releases/latest) · [直接下载 0.3.42 EXE](https://github.com/M1vvl/Sonora/releases/download/v0.3.42/Sonara-0.3.42-Windows.exe)
 
 打开发布页，在 Assets 中下载 Sonara 对应版本的 Windows.exe，保存到自己的文件夹后双击运行。运行依赖由程序自动展开，首次启动会有短暂等待。各用户的账号保存在自己的私人数据目录。
 

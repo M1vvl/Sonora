@@ -195,3 +195,12 @@ Codex统计默认仅纳入当前界面项目根目录内、未归档的主对话
 ## 0.3.41 发布更新
 
 更新器固定使用 M1vvl/Sonora 的 GitHub 正式 Release；只接受严格三段版本、更高版本、仓库内固定命名单文件 EXE 以及 GitHub 提供的 SHA256 digest。下载有大小和时间上限，校验完成后才触发退出。替换助手使用独立 JSON 参数、LiteralPath、当前进程退出等待与启动回执；原程序保留到新版确认启动。账号目录不包含在更新载荷中。
+
+
+## Veyra Liquid Glass migration (0.3.42)
+
+- `native/liquid-glass/Veyra` preserves the Veyra D3D11 renderer, HLSL and compiled shader assets. `migration.json` records unchanged-file hashes. Only O1 exclusion includes the Sonara main process in addition to the helper. Public capture exclusion remains disabled.
+- `src/liquid-glass.cjs` owns one on-demand helper for island and dashboard. Per-surface binary frame acknowledgements bound queued data to one frame. Hidden, disabled, loading and minimized surfaces are removed; no active surfaces closes the helper and frees WGC/D3D resources.
+- `ui/veyra-glass.js/css` paints the native material below DOM content. Existing separate island/dashboard opacity settings are preserved; content is never faded. Main theme overlay keeps the selected palette. Windows global transparency is never changed.
+- The old outside-contour sampling and native Acrylic are no longer in the main runtime material path. Legacy pure modules remain for their historical diagnostics/tests. Island dimensions, gestures and music controls are unchanged.
+- The Veyra shader byte-for-byte validation, binary protocol bounds/backpressure, hidden-surface release, theme/opacity persistence, and both transparency close-icon centers are verified before delivery.

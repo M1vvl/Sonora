@@ -10,13 +10,14 @@ const { createDashboardState } = require('./dashboard-state.cjs');
 const { detectProcesses } = require('./processes.cjs');
 const { createMonitor } = require('./monitor.cjs');
 const { loadProjects } = require('./projects.cjs');
-const { useNativeGlass, applyMaterial, getMaterialDiagnostics } = require('./material.cjs');
+// The migrated Veyra engine owns optical material; keep Electron's per-pixel canvas.
+const useNativeGlass=()=>false,applyMaterial=()=> 'css',getMaterialDiagnostics=()=>({backend:'veyra-d3d11'});
 const { createAudioMonitor } = require('./audio/index.cjs');
 const { createMediaMonitor } = require('./media/index.cjs');
 const { createMediaSelection } = require('./media-selection.cjs');
 const { createMediaLyrics } = require('./media-lyrics.cjs');
 const { createIslandAutoHide } = require('./island-autohide.cjs');
-const { createRefraction } = require('./refraction.cjs');
+const { createLiquidGlass } = require('./liquid-glass.cjs');
 const { forIsland } = require('./snapshots.cjs');
 const { ISLAND_COMPACT, ISLAND_EXPANDED } = require('./window-layout.cjs');
 
@@ -69,15 +70,7 @@ function syncDesktopEffects() {
   audio?.configure({ enabled: !smoke && settings?.musicReactive !== false && settings?.islandEnabled === true && Boolean(island && !island.isDestroyed() && island.isVisible()), mode: settings?.audioSourceMode });
   media?.configure({ enabled: !smoke && settings?.musicCover !== false && settings?.islandEnabled === true && Boolean(island && !island.isDestroyed() && island.isVisible()) });
   mediaSelection?.configure(!smoke && settings?.musicCover !== false && settings?.islandEnabled === true && Boolean(island && !island.isDestroyed() && island.isVisible()));
-  refraction?.configure({ enabled: !smoke && settings?.islandEnabled === true && Boolean(island && !island.isDestroyed() && island.isVisible()), rim: settings?.islandEdge === 'refract' });
-}
-function refractionGeometry(win) {
-  const bounds = win.getBounds(), pixels = screen.dipToScreenRect(win, bounds);
-  const scale = pixels.width / bounds.width;
-  return { ...pixels, radius: Math.min(Math.floor(Math.min(pixels.width, pixels.height) / 2), Math.round((expanded ? 26 : 22) * scale)), thickness: Math.max(1, Math.round((expanded ? 12 : 8) * scale)), padding: Math.max(3, Math.round(16 * scale)) };
-}
-function sendRefractionFrame(frame) {
-  if (island && !island.isDestroyed() && !island.webContents.isLoading()) island.webContents.send('pulse:refraction-frame', frame);
+  refraction?.sync();
 }
 function sendMediaUpdate(value) {
   if (island && !island.isDestroyed() && island.isVisible() && !island.webContents.isLoading()) {
@@ -151,7 +144,8 @@ function createDashboard() {
 }
 function applyDashboardMaterial() {
   if(!dashboard||dashboard.isDestroyed())return;
-  const status=require('./dashboard-material.cjs').applyDashboardMaterial(dashboard,store.get());
+  const status={requested:store.get().dashboardGlass===true,backend:'veyra-d3d11',nativeConfigured:true};
+  refraction?.sync();
   if(!dashboard.webContents.isLoading())dashboard.webContents.send('pulse:dashboard-material',status);
 }
 function openDashboard() {
@@ -218,7 +212,6 @@ function setExpanded(value) {
   const previous = island.getBounds();
   const { width, height } = expanded ? ISLAND_EXPANDED : ISLAND_COMPACT;
   const next = clampPosition(previous.x + (previous.width - width) / 2, previous.y, width, height);
-  sendRefractionFrame({ active: false, reason: 'resizing' });
   island.setBounds({ ...next, width, height });
   material = applyMaterial(island, store.get(), expanded);
   islandAutoHide?.configure();
@@ -275,6 +268,7 @@ function scanProcesses() {
   return processScanPromise;
 }
 function registerIPC() {
+  ipcMain.on('pulse:liquid-glass-presented',(event,value)=>{if(allowedPages.has(event.senderFrame?.url))refraction?.presented(event.sender,value);});
   register('pulse:dashboard-ready',event=>{
     if(event.sender!==dashboard?.webContents||event.senderFrame!==event.sender.mainFrame||event.senderFrame.url!==pathToFileURL(path.join(ROOT,'ui/dashboard.html')).href)throw new Error('Dashboard readiness requires its local main frame');
     return dashboardReadiness?.markRendererReady()===true;
@@ -399,7 +393,8 @@ else {
     mediaSelection=createMediaSelection({loadCover:url=>musicBridge?.getArtwork(url),onUpdate:sendMediaUpdate});
     mediaLyrics=createMediaLyrics({lookup:value=>musicBridge.findMediaLyrics(value),onChange:()=>sendMediaUpdate(mediaSelection.getStatus())});
     media = createMediaMonitor({ executablePath: app.isPackaged ? path.join(process.resourcesPath, 'native/media/AgentPulse.MediaProbe.exe') : path.join(ROOT, 'native/media/bin/AgentPulse.MediaProbe.exe'), onUpdate:value=>mediaSelection.setNative(value) });
-    refraction = createRefraction({ getWindow: () => island, getGeometry: refractionGeometry, onFrame: sendRefractionFrame });
+    refraction = createLiquidGlass({app,screen,getIsland:()=>island,getDashboard:()=>dashboard,getSettings:()=>store.get(),isExpanded:()=>expanded,onError:logError});
+    if(!smoke)refraction.start();
     const playerDir=app.isPackaged?path.join(process.resourcesPath,'native/player'):path.join(ROOT,'native/player/resources');
     playback=require('./playback-coordinator.cjs').createPlaybackCoordinator({electron,root:ROOT,dataDir:path.join(app.getPath('userData'),'anime'),getTheme:()=>store.get().interfaceTheme,getHostWindow:()=>dashboard,
       nativeOptions:{executablePath:app.isPackaged?path.join(playerDir,'AgentPulse.Player.exe'):path.join(ROOT,'native/player/bin/AgentPulse.Player.exe'),libraryPath:path.join(playerDir,'libmpv-2.dll'),shaderDirectory:path.join(playerDir,'shaders')}});

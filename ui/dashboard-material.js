@@ -14,6 +14,7 @@
       root.dataset.dashboardGlass=String(value.dashboardGlass===true);
       const opacity=Number.isFinite(value.dashboardOpacity)?value.dashboardOpacity:.6;
       root.style.setProperty('--dashboard-tint',Math.round(opacity*100)+'%');
+      root.style.setProperty('--veyra-glass-opacity',String(opacity));
       root.style.setProperty('--dashboard-shell-tint',Math.round(opacity*100)+'%');
       root.style.setProperty('--dashboard-panel-tint',Math.round((.2+opacity*.25)*100)+'%');
       root.style.setProperty('--dashboard-nested-tint',Math.round((.08+opacity*.15)*100)+'%');
@@ -51,7 +52,7 @@
     on(range,'change',commit);
     function renderStatus(){
       const node=$('dashboard-glass-status'),value=diagnostics;
-      node.textContent=!settings.dashboardGlass?'开启后使用当前主题的透明表面':value?.fallbackReason==='system-transparency-disabled'?'雾面材质降级 · Windows 透明效果关闭，桌面原生模糊不可用':value?.nativeConfigured?'系统 Acrylic · 透明度仅调整表面，不淡化文字':'清透模式 · 当前原生磨砂不可用';
+      node.textContent=!settings.dashboardGlass?'开启后使用 Veyra Liquid Glass':'Veyra Liquid Glass · 实时下层窗口折射';
     }
     return {update,setShape(value){
       const square=value?.radiusDIP===0;

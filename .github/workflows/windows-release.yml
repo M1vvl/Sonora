@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
       - name: Detect version
         id: version
         shell: pwsh
@@ -37,6 +40,12 @@ jobs:
         name: Build portable application
         shell: pwsh
         run: |
+          ./native/liquid-glass/build.ps1
+          if(!$?){exit 1}
+          ./native/liquid-glass/bin/Sonara.LiquidGlass.exe --validate-shader
+          if($LASTEXITCODE -ne 0){exit $LASTEXITCODE}
+          node --test tests/liquid-glass.test.cjs tests/dashboard-transparency.test.cjs
+          if($LASTEXITCODE -ne 0){exit $LASTEXITCODE}
           ./scripts/build-source.ps1
           if(!$?){exit 1}
           ./node_modules/.bin/electron-builder.cmd --win portable --x64
